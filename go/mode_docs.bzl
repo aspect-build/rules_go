@@ -106,7 +106,7 @@ Includes debugging information in compiled packages (using the `-N` and `-l` fla
 Controls which build tags are enabled when evaluating build constraints in source files. Useful for conditional compilation.
 
 
-### `linkmode`
+#### `linkmode`
 - Optional string
 - Default: `"normal"`
 

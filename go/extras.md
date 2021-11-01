@@ -35,9 +35,11 @@ gomock
 This rule allows you to generate mock interfaces with mockgen (from [golang/mock]) which can be useful for certain testing scenarios. See [gomock_rule] in the gomock repository.
 
 
+
+
 <a id="#go_embed_data"></a>
 
-## go_embed_data
+### go_embed_data
 
 <pre>
 go_embed_data(<a href="#go_embed_data-name">name</a>, <a href="#go_embed_data-flatten">flatten</a>, <a href="#go_embed_data-package">package</a>, <a href="#go_embed_data-src">src</a>, <a href="#go_embed_data-srcs">srcs</a>, <a href="#go_embed_data-string">string</a>, <a href="#go_embed_data-unpack">unpack</a>, <a href="#go_embed_data-var">var</a>)
@@ -59,7 +61,7 @@ go_embed_data_dependencies()
 `go_embed_data` accepts the attributes listed below.
 
 
-**ATTRIBUTES**
+#### **Attributes**
 
 
 | Name  | Description | Type | Mandatory | Default |
