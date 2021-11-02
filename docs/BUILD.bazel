@@ -2,16 +2,20 @@ load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
 load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 
+# Dictionary of key-value pairs where:
+# key := {bzl_library target}
+# value := ({output MD file}, {rule template}, {footer file})
 _DOC_SRCS = {
-    "//extras:embed_data": ["extras.md", "rule_subsection.vm"],
-    "//go:mode_docs": ["modes.md", "rule_body.vm"],
-    "//go:core_docs": ["core.md", "rule_subsection.vm"],
+    "//extras:embed_data": ("extras.md", "rule_subsection.vm", "footers/empty.md"),
+    "//go:mode_docs": ("modes.md", "rule_body.vm", "footers/empty.md"),
+    "//go:core_docs": ("core.md", "rule_subsection.vm", "footers/core_docs.md"),
 }
 
+# Generate MD from .bzl
 [
     stardoc(
-        name = out[0].replace(".md", "_docgen"),
-        out = out[0],
+        name = out[0].replace(".md", "-docgen"),
+        out = out[0].replace(".md", "-docgen.md"),
         input = input + ".bzl",
         deps = [input],
         rule_template = out[1]
@@ -22,18 +26,22 @@ _DOC_SRCS = {
     ] in _DOC_SRCS.items()
 ]
 
+# Append footers onto generated MD
 [
-    diff_test(
-        name = "check_" + out[0],
-        failure_message = "Please run \"bazel run //docs:update\"",
-        # Source file
-        file1 = "//go:" + out[0],
-        # Output from stardoc rule above
-        file2 = out[0],
+    genrule(
+        name = out[0].replace(".md", "-linked"),
+        srcs = [out[0].replace(".md", "-docgen.md"), out[2]],
+        outs = [out[0]],
+        cmd = """
+            IFS=' ' read -r -a srcs <<< "$(SRCS)" \n
+            touch $@ \n
+            cat $${srcs[0]} $${srcs[1]} >> $@ \n
+            """
     )
     for out in _DOC_SRCS.values()
 ]
 
+# Update MD in local source tree
 write_file(
     name = "gen_update",
     out = "update.sh",
@@ -51,3 +59,16 @@ sh_binary(
     srcs = ["update.sh"],
     data = [out[0] for out in _DOC_SRCS.values()],
 )
+
+# Ensure that the generated MD has been updated in the local source tree
+[
+    diff_test(
+        name = "check_" + out[0],
+        failure_message = "Please run \"bazel run //docs:update\"",
+        # Source file
+        file1 = "//go:" + out[0],
+        # Output from stardoc rule above
+        file2 = out[0],
+    )
+    for out in _DOC_SRCS.values()
+]
