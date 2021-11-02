@@ -156,32 +156,143 @@ def _go_binary_impl(ctx):
 _go_binary_kwargs = {
     "implementation": _go_binary_impl,
     "attrs": {
-        "srcs": attr.label_list(allow_files = go_exts + asm_exts + cgo_exts),
-        "data": attr.label_list(allow_files = True),
+        "srcs": attr.label_list(
+            allow_files = go_exts + asm_exts + cgo_exts,
+            doc = """The list of Go source files that are compiled to create the package.
+            Only `.go` and `.s` files are permitted, unless the `cgo`
+            attribute is set, in which case,  
+            `.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm`
+            files are also permitted. Files may be filtered at build time
+            using Go [build constraints].
+            """,
+        ),
+        "data": attr.label_list(
+            allow_files = True,
+            doc = """List of files needed by this rule at run-time. This may include data files
+            needed or other programs that may be executed. The [bazel] package may be
+            used to locate run files; they may appear in different places depending on the
+            operating system and environment. See [data dependencies] for more
+            information on data files.
+            """,
+        ),
         "deps": attr.label_list(
             providers = [GoLibrary],
+            doc = """List of Go libraries this package imports directly.
+            These may be `go_library` rules or compatible rules with the [GoLibrary] provider.
+            """,
         ),
         "embed": attr.label_list(
             providers = [GoLibrary],
+            doc = """List of Go libraries whose sources should be compiled together with this       
+            binary's sources. Labels listed here must name `go_library`,               
+            `go_proto_library`, or other compatible targets with the [GoLibrary] and
+            [GoSource] providers. Embedded libraries must all have the same `importpath`,
+            which must match the `importpath` for this `go_binary` if one is
+            specified. At most one embedded library may have `cgo = True`, and the
+            embedding binary may not also have `cgo = True`. See [Embedding] for
+            more information.
+            """,
         ),
-        "embedsrcs": attr.label_list(allow_files = True),
-        "importpath": attr.string(),
-        "gc_goopts": attr.string_list(),
-        "gc_linkopts": attr.string_list(),
-        "x_defs": attr.string_dict(),
-        "basename": attr.string(),
-        "out": attr.string(),
-        "cgo": attr.bool(),
-        "cdeps": attr.label_list(),
-        "cppopts": attr.string_list(),
-        "copts": attr.string_list(),
-        "cxxopts": attr.string_list(),
-        "clinkopts": attr.string_list(),
+        "embedsrcs": attr.label_list(
+            allow_files = True,
+            doc = """The list of files that may be embedded into the compiled package using
+            `//go:embed` directives. All files must be in the same logical directory
+            or a subdirectory as source files. All source files containing `//go:embed`
+            directives must be in the same logical directory. It's okay to mix static and
+            generated source files and static and generated embeddable files.
+            """,
+        ),
+        "importpath": attr.string(
+            doc = """The import path of this binary. Binaries can't actually be imported, but this
+            may be used by [go_path] and other tools to report the location of source
+            files. This may be inferred from embedded libraries.
+            """,
+        ),
+        "gc_goopts": attr.string_list(
+            doc = """List of flags to add to the Go compilation command when using the gc compiler.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            """,
+        ),
+        "gc_linkopts": attr.string_list(
+            doc = """List of flags to add to the Go link command when using the gc compiler.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            """,
+        ),
+        "x_defs": attr.string_dict(
+            doc = """Map of defines to add to the go link command.
+            See [Defines and stamping] for examples of how to use these.
+            """,
+        ),
+        "basename": attr.string(
+            doc = """The basename of this binary. The binary
+            basename may also be platform-dependent: on Windows, we add an .exe extension.
+            """,
+        ),
+        "out": attr.string(
+            doc = """Sets the output filename for the generated executable. When set, `go_binary`
+            will write this file without mode-specific directory prefixes, without
+            linkmode-specific prefixes like "lib", and without platform-specific suffixes
+            like ".exe". Note that without a mode-specific directory prefix, the
+            output file (but not its dependencies) will be invalidated in Bazel's cache
+            when changing configurations.
+            """,
+        ),
+        "cgo": attr.bool(
+            doc = """If `True`, the package may contain [cgo] code, and `srcs` may contain
+            C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.
+            When cgo is enabled, these files will be compiled with the C/C++ toolchain
+            and included in the package. Note that this attribute does not force cgo
+            to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++
+            toolchain is configured.
+            """,
+        ),
+        "cdeps": attr.label_list(
+            doc = """The list of other libraries that the c code depends on.
+            This can be anything that would be allowed in [cc_library deps]
+            Only valid if `cgo` = `True`.
+            """,
+        ),
+        "cppopts": attr.string_list(
+            doc = """List of flags to add to the C/C++ preprocessor command.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            Only valid if `cgo` = `True`.
+            """,
+        ),
+        "copts": attr.string_list(
+            doc = """List of flags to add to the C compilation command.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            Only valid if `cgo` = `True`.
+            """,
+        ),
+        "cxxopts": attr.string_list(
+            doc = """List of flags to add to the C++ compilation command.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            Only valid if `cgo` = `True`.
+            """,
+        ),
+        "clinkopts": attr.string_list(
+            doc = """List of flags to add to the C link command.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
+            Only valid if `cgo` = `True`.
+            """,
+        ),
         "_go_context_data": attr.label(default = "//:go_context_data"),
     },
     "executable": True,
     "toolchains": ["@io_bazel_rules_go//go:toolchain"],
+    "doc": """This builds an executable from a set of source files, 
+    which must all be in the `main` package. You can run the binary with 
+    `bazel run`, or you can build it with `bazel build` and run it directly.<br><br>
+    ***Note:*** `name` should be the same as the desired name of the generated binary.<br><br>
+    **Providers:**
+    <ul>
+      <li>[GoLibrary]</li>
+      <li>[GoSource]</li>
+      <li>[GoArchive]</li>
+    </ul>
+    """,
 }
+# TODO need to figure out way to generate doc for flag attributes (including extra ones like `goos`, `goarch`)
 
 go_binary = rule(**_go_binary_kwargs)
 go_transition_binary = go_transition_rule(**_go_binary_kwargs)

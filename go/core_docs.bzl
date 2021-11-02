@@ -29,17 +29,25 @@
   [go_library]: #go_library
   [go_binary]: #go_binary
   [go_test]: #go_test
+  [go_path]: #go_path
+  [go_source]: #go_source
+  [go_test]: #go_test
+  [Defines and stamping]: #defines-and-stamping
+  [Embedding]: #embedding
+  [Cross compilation]: #cross-compilation
+  [Platform-specific dependencies]: #platform-specific-dependencies
+
 
 # Core Go rules
 
 ## Contents
 - [Introduction](#introduction)
 - [Rules](#rules)
-  - [go_library](#go_library)
   - [go_binary](#go_binary)
-  - [go_test](#go_test)
-  - [go_source](#go_source)
+  - [go_library](#go_library)
   - [go_path](#go_path)
+  - [go_source](#go_source)
+  - [go_test](#go_test)
 - [Defines and stamping](#defines-and-stamping)
 - [Embedding](#embedding)
 - [Cross compilation](#cross-compilation)
