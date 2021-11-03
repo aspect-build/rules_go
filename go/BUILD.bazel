@@ -75,11 +75,11 @@ bzl_library(
     srcs = ["core_docs.bzl"],
     visibility = ["//visibility:public"],
     deps = [
+        "//go/private:rpath",
         "//go/private/rules:binary",
-        "//go/private/tools:path",
         "//go/private/rules:library",
-        "//go/private/rules:test",
         "//go/private/rules:source",
-        "//go/private:rpath"
+        "//go/private/rules:test",
+        "//go/private/tools:path",
     ],
 )
