@@ -1,6 +1,13 @@
 #**
 This template is used for including rule definitions as top-level sections in generated stardoc docstrings.
 *#
+#macro( markdownCellFormatNoEscapeHtml $docString )#*
+  *##if ($docString.contains("<ul>"))#*
+      *#${docString.trim().replaceAll("\n(\\s*\n)+", "<br><br>").replaceAll('\n', ' ')}#*
+  *##else#*
+      *#${util.markdownCellFormat($docString)}#*
+  *##end#*
+*##end
 
 <a id="#${ruleName}"></a>
 
@@ -19,6 +26,6 @@ ${ruleInfo.docString}
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 #foreach ($attribute in $ruleInfo.getAttributeList())
-| <a id="${ruleName}-${attribute.name}"></a>$attribute.name | #if(!$attribute.docString.isEmpty()) ${util.markdownCellFormat($attribute.docString)} #else - #end  | ${util.attributeTypeString($attribute)} | ${util.mandatoryString($attribute)} | $attribute.defaultValue |
+| <a id="${ruleName}-${attribute.name}"></a>$attribute.name | #if(!$attribute.docString.isEmpty()) #markdownCellFormatNoEscapeHtml( $attribute.docString ) #else - #end  | ${util.attributeTypeString($attribute)} | ${util.mandatoryString($attribute)} | $attribute.defaultValue |
 #end
 #end

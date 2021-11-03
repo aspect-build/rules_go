@@ -262,62 +262,62 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of Go libraries this package imports directly.                                              |
-| These may be ``go_library`` rules or compatible rules with the GoLibrary_ provider.              |
+ List of Go libraries this package imports directly.
+ These may be ``go_library`` rules or compatible rules with the GoLibrary_ provider.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`embed`             | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of Go libraries whose sources should be compiled together with this                         |
-| binary's sources. Labels listed here must name ``go_library``,                                   |
-| ``go_proto_library``, or other compatible targets with the GoLibrary_ and                        |
-| GoSource_ providers. Embedded libraries must all have the same ``importpath``,                   |
-| which must match the ``importpath`` for this ``go_binary`` if one is                             |
-| specified. At most one embedded library may have ``cgo = True``, and the                         |
-| embedding binary may not also have ``cgo = True``. See Embedding_ for                            |
-| more information.                                                                                |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`data`              | :type:`label_list`          | :value:`[]`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| List of files needed by this rule at run-time. This may include data files                       |
-| needed or other programs that may be executed. The `bazel`_ package may be                       |
-| used to locate run files; they may appear in different places depending on the                   |
-| operating system and environment. See `data dependencies`_ for more                              |
-| information on data files.                                                                       |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`importpath`        | :type:`string`              | :value:`""`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| The import path of this binary. Binaries can't actually be imported, but this                    |
-| may be used by `go_path`_ and other tools to report the location of source                       |
-| files. This may be inferred from embedded libraries.                                             |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`pure`              | :type:`string`              | :value:`auto`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| Controls whether cgo source code and dependencies are compiled and linked,                       |
-| similar to setting `CGO_ENABLED`. May be one of :value:`on`, :value:`off`,                       |
-| or :value:`auto`. If :value:`auto`, pure mode is enabled when no C/C++                           |
-| toolchain is configured or when cross-compiling. It's usually better to                          |
-| control this on the command line with                                                            |
-| ``--@io_bazel_rules_go//go/config:pure``. See `mode attributes`_, specifically                   |
-| pure_.                                                                                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`static`            | :type:`string`              | :value:`auto`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| Controls whether a binary is statically linked. May be one of :value:`on`,                       |
-| :value:`off`, or :value:`auto`. Not available on all platforms or in all                         |
-| modes. It's usually better to control this on the command line with                              |
-| ``--@io_bazel_rules_go//go/config:static``. See `mode attributes`_,                              |
-| specifically static_.                                                                            |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`race`              | :type:`string`              | :value:`auto`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| Controls whether code is instrumented for race detection. May be one of                          |
-| :value:`on`, :value:`on`, or :value:`auto`. Not available when cgo is                            |
-| disabled. In most cases, it's better to control this on the command line with                    |
-| ``--@io_bazel_rules_go//go/config:race``. See `mode attributes`_, specifically                   |
-| race_.                                                                                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`msan`              | :type:`string`              | :value:`auto`                         |
-+----------------------------+-----------------------------+---------------------------------------+
+ List of Go libraries whose sources should be compiled together with this                         
+ binary's sources. Labels listed here must name ``go_library``,                                   
+ ``go_proto_library``, or other compatible targets with the GoLibrary_ and                        
+ GoSource_ providers. Embedded libraries must all have the same ``importpath``,                   
+ which must match the ``importpath`` for this ``go_binary`` if one is                             
+ specified. At most one embedded library may have ``cgo = True``, and the                         
+ embedding binary may not also have ``cgo = True``. See Embedding_ for                            
+ more information.                                                                                
+----------------------------+-----------------------------+---------------------------------------
+ :param:`data`              | :type:`label_list`          | :value:`[]`                           
+----------------------------+-----------------------------+---------------------------------------
+ List of files needed by this rule at run-time. This may include data files
+ needed or other programs that may be executed. The `bazel`_ package may be
+ used to locate run files; they may appear in different places depending on the
+ operating system and environment. See `data dependencies`_ for more
+ information on data files.
+----------------------------+-----------------------------+---------------------------------------
+ :param:`importpath`        | :type:`string`              | :value:`""`                           
+----------------------------+-----------------------------+---------------------------------------
+ The import path of this binary. Binaries can't actually be imported, but this
+ may be used by `go_path`_ and other tools to report the location of source
+ files. This may be inferred from embedded libraries.
+----------------------------+-----------------------------+---------------------------------------
+ :param:`pure`              | :type:`string`              | :value:`auto`                         
+----------------------------+-----------------------------+---------------------------------------
+ Controls whether cgo source code and dependencies are compiled and linked,
+ similar to setting `CGO_ENABLED`. May be one of :value:`on`, :value:`off`,
+ or :value:`auto`. If :value:`auto`, pure mode is enabled when no C/C++
+ toolchain is configured or when cross-compiling. It's usually better to
+ control this on the command line with
+ ``--@io_bazel_rules_go//go/config:pure``. See `mode attributes`_, specifically
+ pure_.
+----------------------------+-----------------------------+---------------------------------------
+ :param:`static`            | :type:`string`              | :value:`auto`                         
+----------------------------+-----------------------------+---------------------------------------
+ Controls whether a binary is statically linked. May be one of :value:`on`,                       
+ :value:`off`, or :value:`auto`. Not available on all platforms or in all                         
+ modes. It's usually better to control this on the command line with                              
+ ``--@io_bazel_rules_go//go/config:static``. See `mode attributes`_,                              
+ specifically static_.                                                                            
++----------------------------+-----------------------------+---------------------------------------
+| :param:`race`              | :type:`string`              | :value:`auto`                         
++----------------------------+-----------------------------+---------------------------------------
+| Controls whether code is instrumented for race detection. May be one of                          
+| :value:`on`, :value:`on`, or :value:`auto`. Not available when cgo is                            
+| disabled. In most cases, it's better to control this on the command line with                    
+| ``--@io_bazel_rules_go//go/config:race``. See `mode attributes`_, specifically                   
+| race_.                                                                                           
++----------------------------+-----------------------------+---------------------------------------
+| :param:`msan`              | :type:`string`              | :value:`auto`                         
++----------------------------+-----------------------------+---------------------------------------
 | Controls whether code is instrumented for memory sanitization. May be one of                     |
 | :value:`on`, :value:`on`, or :value:`auto`. Not available when cgo is                            |
 | disabled. In most cases, it's better to control this on the command line with                    |
@@ -351,35 +351,35 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`gc_goopts`         | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the Go compilation command when using the gc compiler.                   |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`gc_linkopts`       | :type:`string_list`         | :value:`[]`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the Go link command when using the gc compiler.                          |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`x_defs`            | :type:`string_dict`         | :value:`{}`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| Map of defines to add to the go link command.                                                    |
-| See `Defines and stamping`_ for examples of how to use these.                                    |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`cgo`               | :type:`boolean`             | :value:`False`                        |
-+----------------------------+-----------------------------+---------------------------------------+
-| If :value:`True`, the package may contain cgo_ code, and ``srcs`` may contain                    |
-| C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.                          |
-| When cgo is enabled, these files will be compiled with the C/C++ toolchain                       |
-| and included in the package. Note that this attribute does not force cgo                         |
-| to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++                        |
-| toolchain is configured.                                                                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`cdeps`             | :type:`label_list`          | :value:`[]`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| The list of other libraries that the c code depends on.                                          |
-| This can be anything that would be allowed in `cc_library deps`_                                 |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`copts`             | :type:`string_list`         | :value:`[]`                           |
+ List of flags to add to the Go compilation command when using the gc compiler.
+ Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.
+----------------------------+-----------------------------+---------------------------------------
+ :param:`gc_linkopts`       | :type:`string_list`         | :value:`[]`                           
+----------------------------+-----------------------------+---------------------------------------
+ List of flags to add to the Go link command when using the gc compiler.                          
+ Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     
+----------------------------+-----------------------------+---------------------------------------
+ :param:`x_defs`            | :type:`string_dict`         | :value:`{}`                           
+----------------------------+-----------------------------+---------------------------------------
+ Map of defines to add to the go link command.
+ See `Defines and stamping`_ for examples of how to use these.
+----------------------------+-----------------------------+---------------------------------------
+ :param:`cgo`               | :type:`boolean`             | :value:`False`                        
+----------------------------+-----------------------------+---------------------------------------
+ If :value:`True`, the package may contain cgo_ code, and ``srcs`` may contain                    
+ C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.                          
+ When cgo is enabled, these files will be compiled with the C/C++ toolchain                       
+ and included in the package. Note that this attribute does not force cgo                         
+ to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++                        
+ toolchain is configured.                                                                         
+----------------------------+-----------------------------+---------------------------------------
+ :param:`cdeps`             | :type:`label_list`          | :value:`[]`                           
+----------------------------+-----------------------------+---------------------------------------
+ The list of other libraries that the c code depends on.                                          
+ This can be anything that would be allowed in `cc_library deps`_                                 
+ Only valid if :param:`cgo` = :value:`True`.                                                      
+----------------------------+-----------------------------+---------------------------------------
+ :param:`copts`             | :type:`string_list`         | :value:`[]`                           
 +----------------------------+-----------------------------+---------------------------------------+
 | List of flags to add to the C compilation command.                                               |
 | Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
@@ -399,9 +399,9 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`clinkopts`         | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the C link command.                                                      |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
+List of flags to add to the C link command.
+Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.
+Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`linkmode`          | :type:`string`              | :value:`"normal"`                     |
 +----------------------------+-----------------------------+---------------------------------------+
@@ -422,12 +422,12 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`out`               | :type:`string`              | :value:`""`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| Sets the output filename for the generated executable. When set, ``go_binary``                   |
-| will write this file without mode-specific directory prefixes, without                           |
-| linkmode-specific prefixes like "lib", and without platform-specific suffixes                    |
-| like ".exe". Note that without a mode-specific directory prefix, the                             |
-| output file (but not its dependencies) will be invalidated in Bazel's cache                      |
-| when changing configurations.                                                                    |
+ Sets the output filename for the generated executable. When set, ``go_binary``
+ will write this file without mode-specific directory prefixes, without
+ linkmode-specific prefixes like "lib", and without platform-specific suffixes
+ like ".exe". Note that without a mode-specific directory prefix, the
+ output file (but not its dependencies) will be invalidated in Bazel's cache
+ when changing configurations.
 +----------------------------+-----------------------------+---------------------------------------+
 
 go_test
@@ -600,36 +600,36 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`cgo`               | :type:`boolean`             | :value:`False`                        |
 +----------------------------+-----------------------------+---------------------------------------+
-| If :value:`True`, the package may contain cgo_ code, and ``srcs`` may contain                    |
-| C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.                          |
-| When cgo is enabled, these files will be compiled with the C/C++ toolchain                       |
-| and included in the package. Note that this attribute does not force cgo                         |
-| to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++                        |
-| toolchain is configured.                                                                         |
+If :value:`True`, the package may contain cgo_ code, and ``srcs`` may contain
+C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.
+When cgo is enabled, these files will be compiled with the C/C++ toolchain
+and included in the package. Note that this attribute does not force cgo
+to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++
+toolchain is configured.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`cdeps`             | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| The list of other libraries that the c code depends on.                                          |
-| This can be anything that would be allowed in `cc_library deps`_                                 |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
+The list of other libraries that the c code depends on.
+This can be anything that would be allowed in `cc_library deps`_
+Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`copts`             | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the C compilation command.                                               |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
+List of flags to add to the C compilation command.
+Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.
+Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`cxxopts`           | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the C++ compilation command.                                             |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
+List of flags to add to the C++ compilation command.
+Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.
+Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`cppopts`           | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of flags to add to the C/C++ preprocessor command.                                          |
-| Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.                     |
-| Only valid if :param:`cgo` = :value:`True`.                                                      |
+List of flags to add to the C/C++ preprocessor command.
+Subject to `"Make variable"`_ substitution and `Bourne shell tokenization`_.
+Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`clinkopts`         | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
@@ -791,60 +791,60 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| A list of targets that build Go packages. A directory will be generated from                     |
-| files in these targets and their transitive dependencies. All targets must                       |
-| provide GoArchive_ (`go_library`_, `go_binary`_, `go_test`_, and similar                         |
-| rules have this).                                                                                |
-|                                                                                                  |
-| Only targets with explicit ``importpath`` attributes will be included in the                     |
-| generated directory. Synthetic packages (like the main package produced by                       |
-| `go_test`_) and packages with inferred import paths will not be                                  |
-| included. The values of ``importmap`` attributes may influence the placement                     |
-| of packages within the generated directory (for example, in vendor                               |
-| directories).                                                                                    |
-|                                                                                                  |
-| The generated directory will contain original source files, including .go,                       |
-| .s, .h, and .c files compiled by cgo. It will not contain files generated by                     |
-| tools like cover and cgo, but it will contain generated files passed in                          |
-| ``srcs`` attributes like .pb.go files. The generated directory will also                         |
-| contain runfiles found in ``data`` attributes.                                                   |
+A list of targets that build Go packages. A directory will be generated from
+files in these targets and their transitive dependencies. All targets must
+provide GoArchive_ (`go_library`_, `go_binary`_, `go_test`_, and similar
+rules have this).
+
+Only targets with explicit ``importpath`` attributes will be included in the
+generated directory. Synthetic packages (like the main package produced by
+`go_test`_) and packages with inferred import paths will not be
+included. The values of ``importmap`` attributes may influence the placement
+of packages within the generated directory (for example, in vendor
+directories).
+
+The generated directory will contain original source files, including .go,
+.s, .h, and .c files compiled by cgo. It will not contain files generated by
+tools like cover and cgo, but it will contain generated files passed in
+``srcs`` attributes like .pb.go files. The generated directory will also
+contain runfiles found in ``data`` attributes.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`data`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| A list of targets producing data files that will be stored next to the                           |
-| ``src/`` directory. Useful for including things like licenses and readmes.                       |
+A list of targets producing data files that will be stored next to the
+``src/`` directory. Useful for including things like licenses and readmes.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`mode`              | :type:`string`              | :value:`"copy"`                       |
 +----------------------------+-----------------------------+---------------------------------------+
-| Determines how the generated directory is provided. May be one of:                               |
-|                                                                                                  |
-| * ``"archive"``: The generated directory is packaged as a single .zip file.                      |
-| * ``"copy"``: The generated directory is a single tree artifact. Source files                    |
-|   are copied into the tree.                                                                      |
-| * ``"link"``: Source files are symlinked into the tree. All of the symlink                       |
-|   files are provided as separate output files.                                                   |
-|                                                                                                  |
-| **NOTE:** In ``"copy"`` mode, when a ``GoPath`` is consumed as a set of input                    |
-| files or run files, Bazel may provide symbolic links instead of regular files.                   |
-| Any program that consumes these files should dereference links, e.g., if you                     |
-| run ``tar``, use the ``--dereference`` flag.                                                     |
+ Determines how the generated directory is provided. May be one of:
+
+ * ``"archive"``: The generated directory is packaged as a single .zip file.
+ * ``"copy"``: The generated directory is a single tree artifact. Source files
+   are copied into the tree.
+ * ``"link"``: Source files are symlinked into the tree. All of the symlink
+   files are provided as separate output files.
+
+ **NOTE:** In ``"copy"`` mode, when a ``GoPath`` is consumed as a set of input
+ files or run files, Bazel may provide symbolic links instead of regular files.
+ Any program that consumes these files should dereference links, e.g., if you
+ run ``tar``, use the ``--dereference`` flag.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`include_data`      | :type:`bool`                | :value:`True`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| When true, data files referenced by libraries, binaries, and tests will be                       |
-| included in the output directory. Files listed in the :param:`data` attribute                    |
-| for this rule will be included regardless of this attribute.                                     |
+When true, data files referenced by libraries, binaries, and tests will be
+included in the output directory. Files listed in the :param:`data` attribute
+for this rule will be included regardless of this attribute.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`include_pkg`       | :type:`bool`                | :value:`False`                        |
 +----------------------------+-----------------------------+---------------------------------------+
-| When true, a `pkg` subdirectory containing the compiled libraries will be created in the         |
-| generated `GOPATH` containing compiled libraries.                                                |
+When true, a `pkg` subdirectory containing the compiled libraries will be created in the
+generated `GOPATH` containing compiled libraries.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`include_transitive`| :type:`bool`                | :value:`True`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| When true, the transitive dependency graph will be included in the generated `GOPATH`. This is   |
-| the default behaviour. When false, only the direct dependencies will be included in the          |
-| generated `GOPATH`.                                                                              |
+When true, the transitive dependency graph will be included in the generated `GOPATH`. This is
+the default behaviour. When false, only the direct dependencies will be included in the
+generated `GOPATH`.
 +----------------------------+-----------------------------+---------------------------------------+
 
 Defines and stamping

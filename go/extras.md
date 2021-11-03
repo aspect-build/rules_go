@@ -37,6 +37,7 @@ This rule allows you to generate mock interfaces with mockgen (from [golang/mock
 
 
 
+
 <a id="#go_embed_data"></a>
 
 ### go_embed_data
