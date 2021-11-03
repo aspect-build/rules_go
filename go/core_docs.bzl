@@ -43,6 +43,9 @@
 
 # Core Go rules
 
+These are the core go rules, required for basic operation. The intent is that these rules are 
+sufficient to match the capabilities of the normal go tools.
+
 ## Contents
 - [Introduction](#introduction)
 - [Rules](#rules)
