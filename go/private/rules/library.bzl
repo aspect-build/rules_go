@@ -86,7 +86,7 @@ go_library = rule(
         ),
         "importmap": attr.string(
             doc = """
-            The actual import path of this library. This is mostly only visible to the compiler and linker, 
+            The actual import path of this library. By default, this is `importpath`. This is mostly only visible to the compiler and linker, 
             but it may also be seen in stack traces. This must be unique among packages passed to the linker. 
             It may be set to something different than `importpath` to prevent conflicts between multiple packages 
             with the same path (for example, from different vendor directories).

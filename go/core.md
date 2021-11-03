@@ -124,7 +124,8 @@ Rules
 
 <pre>
 go_binary(<a href="#go_binary-name">name</a>, <a href="#go_binary-basename">basename</a>, <a href="#go_binary-cdeps">cdeps</a>, <a href="#go_binary-cgo">cgo</a>, <a href="#go_binary-clinkopts">clinkopts</a>, <a href="#go_binary-copts">copts</a>, <a href="#go_binary-cppopts">cppopts</a>, <a href="#go_binary-cxxopts">cxxopts</a>, <a href="#go_binary-data">data</a>, <a href="#go_binary-deps">deps</a>, <a href="#go_binary-embed">embed</a>,
-          <a href="#go_binary-embedsrcs">embedsrcs</a>, <a href="#go_binary-gc_goopts">gc_goopts</a>, <a href="#go_binary-gc_linkopts">gc_linkopts</a>, <a href="#go_binary-importpath">importpath</a>, <a href="#go_binary-out">out</a>, <a href="#go_binary-srcs">srcs</a>, <a href="#go_binary-x_defs">x_defs</a>)
+          <a href="#go_binary-embedsrcs">embedsrcs</a>, <a href="#go_binary-gc_goopts">gc_goopts</a>, <a href="#go_binary-gc_linkopts">gc_linkopts</a>, <a href="#go_binary-goarch">goarch</a>, <a href="#go_binary-goos">goos</a>, <a href="#go_binary-gotags">gotags</a>, <a href="#go_binary-importpath">importpath</a>, <a href="#go_binary-linkmode">linkmode</a>, <a href="#go_binary-msan">msan</a>, <a href="#go_binary-out">out</a>,
+          <a href="#go_binary-pure">pure</a>, <a href="#go_binary-race">race</a>, <a href="#go_binary-srcs">srcs</a>, <a href="#go_binary-static">static</a>, <a href="#go_binary-x_defs">x_defs</a>)
 </pre>
 
 This builds an executable from a set of source files, 
@@ -158,9 +159,17 @@ This builds an executable from a set of source files,
 | <a id="go_binary-embedsrcs"></a>embedsrcs |  The list of files that may be embedded into the compiled package using             <code>//go:embed</code> directives. All files must be in the same logical directory             or a subdirectory as source files. All source files containing <code>//go:embed</code>             directives must be in the same logical directory. It's okay to mix static and             generated source files and static and generated embeddable files.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="go_binary-gc_goopts"></a>gc_goopts |  List of flags to add to the Go compilation command when using the gc compiler.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
 | <a id="go_binary-gc_linkopts"></a>gc_linkopts |  List of flags to add to the Go link command when using the gc compiler.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
+| <a id="go_binary-goarch"></a>goarch |  Forces a binary to be cross-compiled for a specific architecture. It's usually             better to control this on the command line with <code>--platforms</code>.<br><br>            This disables cgo by default, since a cross-compiling C/C++ toolchain is             rarely available. To force cgo, set <code>pure</code> = <code>off</code>.<br><br>            See [Cross compilation] for more information.   | String | optional | "auto" |
+| <a id="go_binary-goos"></a>goos |  Forces a binary to be cross-compiled for a specific operating system. It's             usually better to control this on the command line with <code>--platforms</code>.<br><br>            This disables cgo by default, since a cross-compiling C/C++ toolchain is             rarely available. To force cgo, set <code>pure</code> = <code>off</code>.<br><br>            See [Cross compilation] for more information.   | String | optional | "auto" |
+| <a id="go_binary-gotags"></a>gotags |  Enables a list of build tags when evaluating [build constraints]. Useful for             conditional compilation.   | List of strings | optional | [] |
 | <a id="go_binary-importpath"></a>importpath |  The import path of this binary. Binaries can't actually be imported, but this             may be used by [go_path] and other tools to report the location of source             files. This may be inferred from embedded libraries.   | String | optional | "" |
+| <a id="go_binary-linkmode"></a>linkmode |  Determines how the binary should be built and linked. This accepts some of             the same values as `go build -buildmode` and works the same way.             <ul>             <li>`normal`: Builds a normal executable with position-dependent code.</li>             <li>`pie`: Builds a position-independent executable.</li>             <li>`plugin`: Builds a shared library that can be loaded as a Go plugin. Only supported on platforms that support plugins.</li>             <li>`c-shared`: Builds a shared library that can be linked into a C program.</li>             <li>`c-archive`: Builds an archive that can be linked into a C program.</li>             </ul>   | String | optional | "normal" |
+| <a id="go_binary-msan"></a>msan |  Controls whether code is instrumented for memory sanitization. May be one of             <code>on</code>, <code>on</code>, or <code>auto</code>. Not available when cgo is             disabled. In most cases, it's better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:msan</code>. See [mode attributes], specifically             [msan].   | String | optional | "auto" |
 | <a id="go_binary-out"></a>out |  Sets the output filename for the generated executable. When set, <code>go_binary</code>             will write this file without mode-specific directory prefixes, without             linkmode-specific prefixes like "lib", and without platform-specific suffixes             like ".exe". Note that without a mode-specific directory prefix, the             output file (but not its dependencies) will be invalidated in Bazel's cache             when changing configurations.   | String | optional | "" |
+| <a id="go_binary-pure"></a>pure |  Controls whether cgo source code and dependencies are compiled and linked,             similar to setting <code>CGO_ENABLED</code>. May be one of <code>on</code>, <code>off</code>,             or <code>auto</code>. If <code>auto</code>, pure mode is enabled when no C/C++             toolchain is configured or when cross-compiling. It's usually better to             control this on the command line with             <code>--@io_bazel_rules_go//go/config:pure</code>. See [mode attributes], specifically             [pure].   | String | optional | "auto" |
+| <a id="go_binary-race"></a>race |  Controls whether code is instrumented for race detection. May be one of             <code>on</code>, <code>on</code>, or <code>auto</code>. Not available when cgo is             disabled. In most cases, it's better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:race</code>. See [mode attributes], specifically             [race].   | String | optional | "auto" |
 | <a id="go_binary-srcs"></a>srcs |  The list of Go source files that are compiled to create the package.             Only <code>.go</code> and <code>.s</code> files are permitted, unless the <code>cgo</code>             attribute is set, in which case,               <code>.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm</code>             files are also permitted. Files may be filtered at build time             using Go [build constraints].   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_binary-static"></a>static |  Controls whether a binary is statically linked. May be one of <code>on</code>,             <code>off</code>, or <code>auto</code>. Not available on all platforms or in all             modes. It's usually better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:static</code>. See [mode attributes],             [specifically static].   | String | optional | "auto" |
 | <a id="go_binary-x_defs"></a>x_defs |  Map of defines to add to the go link command.             See [Defines and stamping] for examples of how to use these.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | optional | {} |
 
 
@@ -205,7 +214,7 @@ This builds a Go library from a set of source files that are all part of
 | <a id="go_library-embed"></a>embed |  List of Go libraries whose sources should be compiled together with this package's sources.              Labels listed here must name <code>go_library</code>, <code>go_proto_library</code>, or other compatible targets with              the [GoLibrary] and [GoSource] providers. Embedded libraries must have the same <code>importpath</code> as the embedding library.              At most one embedded library may have <code>cgo = True</code>, and the embedding library may not also have <code>cgo = True</code>.              See [Embedding] for more information.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="go_library-embedsrcs"></a>embedsrcs |  The list of files that may be embedded into the compiled package using <code>//go:embed</code>              directives. All files must be in the same logical directory or a subdirectory as source files.              All source files containing <code>//go:embed</code> directives must be in the same logical directory.              It's okay to mix static and generated source files and static and generated embeddable files.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="go_library-gc_goopts"></a>gc_goopts |  List of flags to add to the Go compilation command when using the gc compiler.              Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
-| <a id="go_library-importmap"></a>importmap |  The actual import path of this library. This is mostly only visible to the compiler and linker,              but it may also be seen in stack traces. This must be unique among packages passed to the linker.              It may be set to something different than <code>importpath</code> to prevent conflicts between multiple packages              with the same path (for example, from different vendor directories).   | String | optional | "" |
+| <a id="go_library-importmap"></a>importmap |  The actual import path of this library. By default, this is <code>importpath</code>. This is mostly only visible to the compiler and linker,              but it may also be seen in stack traces. This must be unique among packages passed to the linker.              It may be set to something different than <code>importpath</code> to prevent conflicts between multiple packages              with the same path (for example, from different vendor directories).   | String | optional | "" |
 | <a id="go_library-importpath"></a>importpath |  The source import path of this library. Other libraries can import this library using this path.              This must either be specified in <code>go_library</code> or inherited from one of the libraries in <code>embed</code>.   | String | optional | "" |
 | <a id="go_library-importpath_aliases"></a>importpath_aliases |  -   | List of strings | optional | [] |
 | <a id="go_library-srcs"></a>srcs |  The list of Go source files that are compiled to create the package.              Only <code>.go</code> and <code>.s</code> files are permitted, unless the <code>cgo</code> attribute is set,              in which case, <code>.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm</code> files are also permitted.              Files may be filtered at build time using Go [build constraints].   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
@@ -242,7 +251,7 @@ go_path(<a href="#go_path-name">name</a>, <a href="#go_path-data">data</a>, <a h
 | <a id="go_path-include_data"></a>include_data |  When true, data files referenced by libraries, binaries, and tests will be             included in the output directory. Files listed in the <code>data</code> attribute             for this rule will be included regardless of this attribute.   | Boolean | optional | True |
 | <a id="go_path-include_pkg"></a>include_pkg |  When true, a <code>pkg</code> subdirectory containing the compiled libraries will be created in the             generated <code>GOPATH</code> containing compiled libraries.   | Boolean | optional | False |
 | <a id="go_path-include_transitive"></a>include_transitive |  When true, the transitive dependency graph will be included in the generated <code>GOPATH</code>. This is             the default behaviour. When false, only the direct dependencies will be included in the             generated <code>GOPATH</code>.   | Boolean | optional | True |
-| <a id="go_path-mode"></a>mode |  Determines how the generated directory is provided. May be one of:             <ul>                 <li><code>"archive"</code>: The generated directory is packaged as a single .zip file.</li>                 <li><code>"copy"</code>: The generated directory is a single tree artifact. Source files                 are copied into the tree.</li>                 <li><code>"link"</code>: Source files are symlinked into the tree. All of the symlink                 files are provided as separate output files.</li>             </ul>              **NOTE:** In <code>"copy"</code> mode, when a <code>GoPath</code> is consumed as a set of input             files or run files, Bazel may provide symbolic links instead of regular files.             Any program that consumes these files should dereference links, e.g., if you             run <code>tar</code>, use the <code>--dereference</code> flag.   | String | optional | "copy" |
+| <a id="go_path-mode"></a>mode |  Determines how the generated directory is provided. May be one of:             <ul>                 <li><code>"archive"</code>: The generated directory is packaged as a single .zip file.</li>                 <li><code>"copy"</code>: The generated directory is a single tree artifact. Source files                 are copied into the tree.</li>                 <li><code>"link"</code>: Source files are symlinked into the tree. All of the symlink                 files are provided as separate output files.</li>             </ul>              ***Note:*** In <code>"copy"</code> mode, when a <code>GoPath</code> is consumed as a set of input             files or run files, Bazel may provide symbolic links instead of regular files.             Any program that consumes these files should dereference links, e.g., if you             run <code>tar</code>, use the <code>--dereference</code> flag.   | String | optional | "copy" |
 
 
 
@@ -313,7 +322,7 @@ This builds a set of tests that can be run with `bazel test`.<br><br>
     the testbinary can be invoked with `-test.v` by setting
     `GO_TEST_WRAP_TESTV=1` in the test environment; this will result in the
     `XML_OUTPUT_FILE` containing more granular data.<br><br>
-    **Note:** To interoperate cleanly with old targets generated by [Gazelle], `name`
+    ***Note:*** To interoperate cleanly with old targets generated by [Gazelle], `name`
     should be `go_default_test` for internal tests and
     `go_default_xtest` for external tests. Gazelle now generates
     the name  based on the last component of the path. For example, a test
@@ -347,7 +356,7 @@ This builds a set of tests that can be run with `bazel test`.<br><br>
 | <a id="go_test-msan"></a>msan |  Controls whether code is instrumented for memory sanitization. May be one of             <code>on</code>, <code>on</code>, or <code>auto</code>. Not available when cgo is             disabled. In most cases, it's better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:msan</code>. See [mode attributes], specifically             [msan].   | String | optional | "auto" |
 | <a id="go_test-pure"></a>pure |  Controls whether cgo source code and dependencies are compiled and linked,             similar to setting <code>CGO_ENABLED</code>. May be one of <code>on</code>, <code>off</code>,             or <code>auto</code>. If <code>auto</code>, pure mode is enabled when no C/C++             toolchain is configured or when cross-compiling. It's usually better to             control this on the command line with             <code>--@io_bazel_rules_go//go/config:pure</code>. See [mode attributes], specifically             [pure].   | String | optional | "auto" |
 | <a id="go_test-race"></a>race |  Controls whether code is instrumented for race detection. May be one of             <code>on</code>, <code>on</code>, or <code>auto</code>. Not available when cgo is             disabled. In most cases, it's better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:race</code>. See [mode attributes], specifically             [race].   | String | optional | "auto" |
-| <a id="go_test-rundir"></a>rundir |  A directory to cd to before the test is run.             This should be a path relative to the execution dir of the test.<br><br>            The default behaviour is to change to the workspace relative path, this replicates the normal             behaviour of <code>go test</code> so it is easy to write compatible tests.<br><br>            Setting it to <code>.</code> makes the test behave the normal way for a bazel test.<br><br>            **Note:** This defaults to the package path.   | String | optional | "" |
+| <a id="go_test-rundir"></a>rundir |  A directory to cd to before the test is run.             This should be a path relative to the execution dir of the test.<br><br>            The default behaviour is to change to the workspace relative path, this replicates the normal             behaviour of <code>go test</code> so it is easy to write compatible tests.<br><br>            Setting it to <code>.</code> makes the test behave the normal way for a bazel test.<br><br>            ***Note:*** This defaults to the package path.   | String | optional | "" |
 | <a id="go_test-srcs"></a>srcs |  The list of Go source files that are compiled to create the package.             Only <code>.go</code> and <code>.s</code> files are permitted, unless the <code>cgo</code>             attribute is set, in which case,             <code>.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm</code>             files are also permitted. Files may be filtered at build time             using Go [build constraints].   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="go_test-static"></a>static |  Controls whether a binary is statically linked. May be one of <code>on</code>,             <code>off</code>, or <code>auto</code>. Not available on all platforms or in all             modes. It's usually better to control this on the command line with             <code>--@io_bazel_rules_go//go/config:static</code>. See [mode attributes],             [specifically static].   | String | optional | "auto" |
 | <a id="go_test-x_defs"></a>x_defs |  Map of defines to add to the go link command.             See [Defines and stamping] for examples of how to use these.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | optional | {} |
@@ -420,7 +429,7 @@ by spaces, one per line. For example:
 echo STABLE_GIT_COMMIT $(git rev-parse HEAD)
 ```
 
-**NOTE:** keys that start with `STABLE_` will trigger a re-link when they change.
+***Note:*** keys that start with `STABLE_` will trigger a re-link when they change.
 Other keys will NOT trigger a re-link.
 
 You can reference these in `x_defs` using curly braces.
@@ -508,24 +517,23 @@ Embedding may also be used to add extra sources sources to a
 `go_proto_library`.
 
 ``` bzl
+proto_library(
+    name = "foo_proto",
+    srcs = ["foo.proto"],
+)
 
-    proto_library(
-        name = "foo_proto",
-        srcs = ["foo.proto"],
-    )
+go_proto_library(
+    name = "foo_go_proto",
+    importpath = "example.com/foo",
+    proto = ":foo_proto",
+)
 
-    go_proto_library(
-        name = "foo_go_proto",
-        importpath = "example.com/foo",
-        proto = ":foo_proto",
-    )
-
-    go_library(
-        name = "foo",
-        srcs = ["extra.go"],
-        embed = [":foo_go_proto"],
-        importpath = "example.com/foo",
-    )
+go_library(
+    name = "foo",
+    srcs = ["extra.go"],
+    embed = [":foo_go_proto"],
+    importpath = "example.com/foo",
+)
 ```
 
 ## Cross compilation

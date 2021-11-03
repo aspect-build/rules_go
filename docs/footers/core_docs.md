@@ -65,7 +65,7 @@ by spaces, one per line. For example:
 echo STABLE_GIT_COMMIT $(git rev-parse HEAD)
 ```
 
-**NOTE:** keys that start with `STABLE_` will trigger a re-link when they change.
+***Note:*** keys that start with `STABLE_` will trigger a re-link when they change.
 Other keys will NOT trigger a re-link.
 
 You can reference these in `x_defs` using curly braces.
@@ -153,24 +153,23 @@ Embedding may also be used to add extra sources sources to a
 `go_proto_library`.
 
 ``` bzl
+proto_library(
+    name = "foo_proto",
+    srcs = ["foo.proto"],
+)
 
-    proto_library(
-        name = "foo_proto",
-        srcs = ["foo.proto"],
-    )
+go_proto_library(
+    name = "foo_go_proto",
+    importpath = "example.com/foo",
+    proto = ":foo_proto",
+)
 
-    go_proto_library(
-        name = "foo_go_proto",
-        importpath = "example.com/foo",
-        proto = ":foo_proto",
-    )
-
-    go_library(
-        name = "foo",
-        srcs = ["extra.go"],
-        embed = [":foo_go_proto"],
-        importpath = "example.com/foo",
-    )
+go_library(
+    name = "foo",
+    srcs = ["extra.go"],
+    embed = [":foo_go_proto"],
+    importpath = "example.com/foo",
+)
 ```
 
 ## Cross compilation

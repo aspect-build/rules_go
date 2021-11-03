@@ -198,7 +198,7 @@ go_path = rule(
                 files are provided as separate output files.</li>
             </ul>
 
-            **NOTE:** In <code>"copy"</code> mode, when a <code>GoPath</code> is consumed as a set of input
+            ***Note:*** In <code>"copy"</code> mode, when a <code>GoPath</code> is consumed as a set of input
             files or run files, Bazel may provide symbolic links instead of regular files.
             Any program that consumes these files should dereference links, e.g., if you
             run <code>tar</code>, use the <code>--dereference</code> flag.

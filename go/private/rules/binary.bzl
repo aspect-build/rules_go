@@ -35,6 +35,7 @@ load(
     "//go/private:mode.bzl",
     "LINKMODE_C_ARCHIVE",
     "LINKMODE_C_SHARED",
+    "LINKMODE_NORMAL",
     "LINKMODE_PLUGIN",
     "LINKMODE_SHARED",
 )
@@ -276,6 +277,84 @@ _go_binary_kwargs = {
             Only valid if `cgo` = `True`.
             """,
         ),
+        "pure": attr.string(
+            default = "auto",
+            doc = """Controls whether cgo source code and dependencies are compiled and linked,
+            similar to setting `CGO_ENABLED`. May be one of `on`, `off`,
+            or `auto`. If `auto`, pure mode is enabled when no C/C++
+            toolchain is configured or when cross-compiling. It's usually better to
+            control this on the command line with
+            `--@io_bazel_rules_go//go/config:pure`. See [mode attributes], specifically
+            [pure].
+            """,
+        ),
+        "static": attr.string(
+            default = "auto",
+            doc = """Controls whether a binary is statically linked. May be one of `on`,
+            `off`, or `auto`. Not available on all platforms or in all
+            modes. It's usually better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:static`. See [mode attributes],
+            [specifically static].
+            """,
+        ),
+        "race": attr.string(
+            default = "auto",
+            doc = """Controls whether code is instrumented for race detection. May be one of
+            `on`, `on`, or `auto`. Not available when cgo is
+            disabled. In most cases, it's better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:race`. See [mode attributes], specifically
+            [race].
+            """,
+        ),
+        "msan": attr.string(
+            default = "auto",
+            doc = """Controls whether code is instrumented for memory sanitization. May be one of
+            `on`, `on`, or `auto`. Not available when cgo is
+            disabled. In most cases, it's better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:msan`. See [mode attributes], specifically
+            [msan].
+            """,
+        ),
+        "gotags": attr.string_list(
+            doc = """Enables a list of build tags when evaluating [build constraints]. Useful for
+            conditional compilation.
+            """,
+        ),
+        "goos": attr.string(
+            default = "auto",
+            doc = """Forces a binary to be cross-compiled for a specific operating system. It's
+            usually better to control this on the command line with `--platforms`.
+
+            This disables cgo by default, since a cross-compiling C/C++ toolchain is
+            rarely available. To force cgo, set `pure` = `off`.
+
+            See [Cross compilation] for more information.
+            """,
+        ),
+        "goarch": attr.string(
+            default = "auto",
+            doc = """Forces a binary to be cross-compiled for a specific architecture. It's usually
+            better to control this on the command line with `--platforms`.
+
+            This disables cgo by default, since a cross-compiling C/C++ toolchain is
+            rarely available. To force cgo, set `pure` = `off`.
+
+            See [Cross compilation] for more information.
+            """,
+        ),
+        "linkmode": attr.string(
+            default = LINKMODE_NORMAL,
+            doc = """Determines how the binary should be built and linked. This accepts some of
+            the same values as `go build -buildmode` and works the same way.
+            <ul>
+            <li>`normal`: Builds a normal executable with position-dependent code.</li>
+            <li>`pie`: Builds a position-independent executable.</li>
+            <li>`plugin`: Builds a shared library that can be loaded as a Go plugin. Only supported on platforms that support plugins.</li>
+            <li>`c-shared`: Builds a shared library that can be linked into a C program.</li>
+            <li>`c-archive`: Builds an archive that can be linked into a C program.</li>
+            </ul>
+            """,
+        ),
         "_go_context_data": attr.label(default = "//:go_context_data"),
     },
     "executable": True,
@@ -292,7 +371,6 @@ _go_binary_kwargs = {
     </ul>
     """,
 }
-# TODO need to figure out way to generate doc for flag attributes (including extra ones like `goos`, `goarch`)
 
 go_binary = rule(**_go_binary_kwargs)
 go_transition_binary = go_transition_rule(**_go_binary_kwargs)
