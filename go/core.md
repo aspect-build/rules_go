@@ -256,7 +256,15 @@ go_path(<a href="#go_path-name">name</a>, <a href="#go_path-data">data</a>, <a h
 go_source(<a href="#go_source-name">name</a>, <a href="#go_source-data">data</a>, <a href="#go_source-deps">deps</a>, <a href="#go_source-embed">embed</a>, <a href="#go_source-gc_goopts">gc_goopts</a>, <a href="#go_source-srcs">srcs</a>)
 </pre>
 
-
+This declares a set of source files and related dependencies that can be embedded into one of the
+    other rules.
+    This is used as a way of easily declaring a common set of sources re-used in multiple rules.<br><br>
+    **Providers:**
+    <ul>
+      <li>[GoLibrary]</li>
+      <li>[GoSource]</li>
+    </ul>
+    
 
 #### **Attributes**
 
@@ -264,11 +272,11 @@ go_source(<a href="#go_source-name">name</a>, <a href="#go_source-data">data</a>
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="go_source-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="go_source-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_source-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_source-embed"></a>embed |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_source-gc_goopts"></a>gc_goopts |  -   | List of strings | optional | [] |
-| <a id="go_source-srcs"></a>srcs |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_source-data"></a>data |  List of files needed by this rule at run-time. This may include data files             needed or other programs that may be executed. The [bazel] package may be             used to locate run files; they may appear in different places depending on the             operating system and environment. See [data dependencies] for more             information on data files.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_source-deps"></a>deps |  List of Go libraries this source list imports directly.             These may be go_library rules or compatible rules with the [GoLibrary] provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_source-embed"></a>embed |  List of Go libraries whose sources should be compiled together with this             package's sources. Labels listed here must name <code>go_library</code>,             <code>go_proto_library</code>, or other compatible targets with the [GoLibrary] and             [GoSource] providers. Embedded libraries must have the same <code>importpath</code> as             the embedding library. At most one embedded library may have <code>cgo = True</code>,             and the embedding library may not also have <code>cgo = True</code>. See [Embedding]             for more information.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_source-gc_goopts"></a>gc_goopts |  List of flags to add to the Go compilation command when using the gc compiler.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
+| <a id="go_source-srcs"></a>srcs |  The list of Go source files that are compiled to create the package.             The following file types are permitted: <code>.go, .c, .s, .S .h</code>.             The files may contain Go-style [build constraints].   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 
 
 
@@ -283,7 +291,34 @@ go_test(<a href="#go_test-name">name</a>, <a href="#go_test-cdeps">cdeps</a>, <a
         <a href="#go_test-gc_goopts">gc_goopts</a>, <a href="#go_test-gc_linkopts">gc_linkopts</a>, <a href="#go_test-importpath">importpath</a>, <a href="#go_test-linkmode">linkmode</a>, <a href="#go_test-rundir">rundir</a>, <a href="#go_test-srcs">srcs</a>, <a href="#go_test-x_defs">x_defs</a>)
 </pre>
 
-
+This builds a set of tests that can be run with `bazel test`.<br><br>
+    To run all tests in the workspace, and print output on failure (the
+    equivalent of `go test ./...`), run<br>
+    ```
+    bazel test --test_output=errors //...
+    ```<br><br>
+    To run a Go benchmark test, run<br>
+    ```
+    bazel run //path/to:test -- -test.bench=.
+    ```<br><br>
+    You can run specific tests by passing the `--test_filter=pattern
+    <test_filter_>` argument to Bazel. You can pass arguments to tests by passing
+    `--test_arg=arg <test_arg_>` arguments to Bazel, and you can set environment
+    variables in the test environment by passing
+    `--test_env=VAR=value <test_env_>`.<br><br>
+    To write structured testlog information to Bazel's `XML_OUTPUT_FILE`, tests
+    ran with `bazel test` execute using a wrapper. This functionality can be
+    disabled by setting `GO_TEST_WRAP=0` in the test environment. Additionally,
+    the testbinary can be invoked with `-test.v` by setting
+    `GO_TEST_WRAP_TESTV=1` in the test environment; this will result in the
+    `XML_OUTPUT_FILE` containing more granular data.<br><br>
+    **Note:** To interoperate cleanly with old targets generated by [Gazelle], `name`
+    should be `go_default_test` for internal tests and
+    `go_default_xtest` for external tests. Gazelle now generates
+    the name  based on the last component of the path. For example, a test
+    in `//foo/bar` is named `bar_test`, and uses internal and external
+    sources.
+    
 
 #### **Attributes**
 
@@ -291,23 +326,23 @@ go_test(<a href="#go_test-name">name</a>, <a href="#go_test-cdeps">cdeps</a>, <a
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="go_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="go_test-cdeps"></a>cdeps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-cgo"></a>cgo |  -   | Boolean | optional | False |
-| <a id="go_test-clinkopts"></a>clinkopts |  -   | List of strings | optional | [] |
-| <a id="go_test-copts"></a>copts |  -   | List of strings | optional | [] |
-| <a id="go_test-cppopts"></a>cppopts |  -   | List of strings | optional | [] |
-| <a id="go_test-cxxopts"></a>cxxopts |  -   | List of strings | optional | [] |
-| <a id="go_test-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-embed"></a>embed |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-embedsrcs"></a>embedsrcs |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-gc_goopts"></a>gc_goopts |  -   | List of strings | optional | [] |
-| <a id="go_test-gc_linkopts"></a>gc_linkopts |  -   | List of strings | optional | [] |
-| <a id="go_test-importpath"></a>importpath |  -   | String | optional | "" |
-| <a id="go_test-linkmode"></a>linkmode |  -   | String | optional | "normal" |
-| <a id="go_test-rundir"></a>rundir |  -   | String | optional | "" |
-| <a id="go_test-srcs"></a>srcs |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="go_test-x_defs"></a>x_defs |  -   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | optional | {} |
+| <a id="go_test-cdeps"></a>cdeps |  The list of other libraries that the c code depends on.             This can be anything that would be allowed in [cc_library deps]             Only valid if <code>cgo</code> = <code>True</code>.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-cgo"></a>cgo |  If <code>True</code>, the package may contain [cgo] code, and <code>srcs</code> may contain             C, C++, Objective-C, and Objective-C++ files and non-Go assembly files.             When cgo is enabled, these files will be compiled with the C/C++ toolchain             and included in the package. Note that this attribute does not force cgo             to be enabled. Cgo is enabled for non-cross-compiling builds when a C/C++             toolchain is configured.   | Boolean | optional | False |
+| <a id="go_test-clinkopts"></a>clinkopts |  List of flags to add to the C link command.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].             Only valid if <code>cgo</code> = <code>True</code>.   | List of strings | optional | [] |
+| <a id="go_test-copts"></a>copts |  List of flags to add to the C compilation command.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].             Only valid if <code>cgo</code> = <code>True</code>.   | List of strings | optional | [] |
+| <a id="go_test-cppopts"></a>cppopts |  List of flags to add to the C/C++ preprocessor command.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].             Only valid if <code>cgo</code> = <code>True</code>.   | List of strings | optional | [] |
+| <a id="go_test-cxxopts"></a>cxxopts |  List of flags to add to the C++ compilation command.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].             Only valid if <code>cgo</code> = <code>True</code>.   | List of strings | optional | [] |
+| <a id="go_test-data"></a>data |  List of files needed by this rule at run-time. This may include data files             needed or other programs that may be executed. The [bazel] package may be             used to locate run files; they may appear in different places depending on the             operating system and environment. See [data dependencies] for more             information on data files.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-deps"></a>deps |  List of Go libraries this test imports directly.             These may be go_library rules or compatible rules with the [GoLibrary] provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-embed"></a>embed |  List of Go libraries whose sources should be compiled together with this             package's sources. Labels listed here must name <code>go_library</code>,             <code>go_proto_library</code>, or other compatible targets with the [GoLibrary] and             [GoSource] providers. Embedded libraries must have the same <code>importpath</code> as             the embedding library. At most one embedded library may have <code>cgo = True</code>,             and the embedding library may not also have <code>cgo = True</code>. See [Embedding]             for more information.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-embedsrcs"></a>embedsrcs |  The list of files that may be embedded into the compiled package using             <code>//go:embed</code> directives. All files must be in the same logical directory             or a subdirectory as source files. All source files containing <code>//go:embed</code>             directives must be in the same logical directory. It's okay to mix static and             generated source files and static and generated embeddable files.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-gc_goopts"></a>gc_goopts |  List of flags to add to the Go compilation command when using the gc compiler.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
+| <a id="go_test-gc_linkopts"></a>gc_linkopts |  List of flags to add to the Go link command when using the gc compiler.             Subject to ["Make variable"] substitution and [Bourne shell tokenization].   | List of strings | optional | [] |
+| <a id="go_test-importpath"></a>importpath |  The import path of this test. Tests can't actually be imported, but this             may be used by [go_path] and other tools to report the location of source             files. This may be inferred from embedded libraries.   | String | optional | "" |
+| <a id="go_test-linkmode"></a>linkmode |  Determines how the binary should be built and linked. This accepts some of             the same values as `go build -buildmode` and works the same way.             <ul>             <li>`normal`: Builds a normal executable with position-dependent code.</li>             <li>`pie`: Builds a position-independent executable.</li>             <li>`plugin`: Builds a shared library that can be loaded as a Go plugin. Only supported on platforms that support plugins.</li>             <li>`c-shared`: Builds a shared library that can be linked into a C program.</li>             <li>`c-archive`: Builds an archive that can be linked into a C program.</li>             </ul>   | String | optional | "normal" |
+| <a id="go_test-rundir"></a>rundir |  A directory to cd to before the test is run.             This should be a path relative to the execution dir of the test.<br><br>            The default behaviour is to change to the workspace relative path, this replicates the normal             behaviour of <code>go test</code> so it is easy to write compatible tests.<br><br>            Setting it to <code>.</code> makes the test behave the normal way for a bazel test.   | String | optional | "" |
+| <a id="go_test-srcs"></a>srcs |  The list of Go source files that are compiled to create the package.             Only <code>.go</code> and <code>.s</code> files are permitted, unless the <code>cgo</code>             attribute is set, in which case,             <code>.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm</code>             files are also permitted. Files may be filtered at build time             using Go [build constraints].   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="go_test-x_defs"></a>x_defs |  Map of defines to add to the go link command.             See [Defines and stamping] for examples of how to use these.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | optional | {} |
 
 
 ## Defines and stamping
@@ -410,20 +445,20 @@ build :foo_and_bar` will compile `foo.go` and `bar.go` into a single
 archive. `bazel build :bar` will compile only `bar.go`. Both libraries must
 have the same `importpath`.
 
-.. code:: bzl
+``` bzl
+go_library(
+    name = "foo_and_bar",
+    srcs = ["foo.go"],
+    embed = [":bar"],
+    importpath = "example.com/foo",
+)
 
-    go_library(
-        name = "foo_and_bar",
-        srcs = ["foo.go"],
-        embed = [":bar"],
-        importpath = "example.com/foo",
-    )
-
-    go_library(
-        name = "bar",
-        srcs = ["bar.go"],
-        importpath = "example.com/foo",
-    )
+go_library(
+    name = "bar",
+    srcs = ["bar.go"],
+    importpath = "example.com/foo",
+)
+```
 
 Embedding is most frequently used for tests and binaries. Go supports two
 different kinds of tests. *Internal tests* (e.g., `package foo`) are compiled
@@ -464,7 +499,7 @@ go_test(
 Embedding may also be used to add extra sources sources to a
 `go_proto_library`.
 
-.. code:: bzl
+``` bzl
 
     proto_library(
         name = "foo_proto",
@@ -483,6 +518,7 @@ Embedding may also be used to add extra sources sources to a
         embed = [":foo_go_proto"],
         importpath = "example.com/foo",
     )
+```
 
 ## Cross compilation
 

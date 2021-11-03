@@ -733,32 +733,32 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`srcs`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| The list of Go source files that are compiled to create the package.                             |
-| The following file types are permitted: :value:`.go, .c, .s, .S .h`.                             |
-| The files may contain Go-style `build constraints`_.                                             |
+The list of Go source files that are compiled to create the package.
+The following file types are permitted: :value:`.go, .c, .s, .S .h`.
+The files may contain Go-style `build constraints`_.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of Go libraries this source list imports directly.                                          |
-| These may be go_library rules or compatible rules with the GoLibrary_ provider.                  |
+List of Go libraries this source list imports directly.
+These may be go_library rules or compatible rules with the GoLibrary_ provider.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`embed`             | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of Go libraries whose sources should be compiled together with this                         |
-| package's sources. Labels listed here must name ``go_library``,                                  |
-| ``go_proto_library``, or other compatible targets with the GoLibrary_ and                        |
-| GoSource_ providers. Embedded libraries must have the same ``importpath`` as                     |
-| the embedding library. At most one embedded library may have ``cgo = True``,                     |
-| and the embedding library may not also have ``cgo = True``. See Embedding_                       |
-| for more information.                                                                            |
+List of Go libraries whose sources should be compiled together with this
+package's sources. Labels listed here must name ``go_library``,
+``go_proto_library``, or other compatible targets with the GoLibrary_ and
+GoSource_ providers. Embedded libraries must have the same ``importpath`` as
+the embedding library. At most one embedded library may have ``cgo = True``,
+and the embedding library may not also have ``cgo = True``. See Embedding_
+for more information.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`data`              | :type:`label_list`          | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| List of files needed by this rule at run-time. This may include data files                       |
-| needed or other programs that may be executed. The `bazel`_ package may be                       |
-| used to locate run files; they may appear in different places depending on the                   |
-| operating system and environment. See `data dependencies`_ for more                              |
-| information on data files.                                                                       |
+List of files needed by this rule at run-time. This may include data files
+needed or other programs that may be executed. The [bazel] package may be
+used to locate run files; they may appear in different places depending on the
+operating system and environment. See [data dependencies] for more
+information on data files.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`gc_goopts`         | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+

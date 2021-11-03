@@ -239,7 +239,7 @@ go_path = rule(
     `go_path` can depend on one or more Go targets (i.e., [go_library], [go_binary], or [go_test]).
     It will include packages from those targets, as well as their transitive dependencies.
     Packages will be in subdirectories named after their `importpath` or `importmap` attributes under a `src/` directory.
-    """
+    """,
 )
 
 def _merge_pkg(x, y):

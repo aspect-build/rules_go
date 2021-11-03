@@ -98,20 +98,20 @@ build :foo_and_bar` will compile `foo.go` and `bar.go` into a single
 archive. `bazel build :bar` will compile only `bar.go`. Both libraries must
 have the same `importpath`.
 
-.. code:: bzl
+``` bzl
+go_library(
+    name = "foo_and_bar",
+    srcs = ["foo.go"],
+    embed = [":bar"],
+    importpath = "example.com/foo",
+)
 
-    go_library(
-        name = "foo_and_bar",
-        srcs = ["foo.go"],
-        embed = [":bar"],
-        importpath = "example.com/foo",
-    )
-
-    go_library(
-        name = "bar",
-        srcs = ["bar.go"],
-        importpath = "example.com/foo",
-    )
+go_library(
+    name = "bar",
+    srcs = ["bar.go"],
+    importpath = "example.com/foo",
+)
+```
 
 Embedding is most frequently used for tests and binaries. Go supports two
 different kinds of tests. *Internal tests* (e.g., `package foo`) are compiled
@@ -152,7 +152,7 @@ go_test(
 Embedding may also be used to add extra sources sources to a
 `go_proto_library`.
 
-.. code:: bzl
+``` bzl
 
     proto_library(
         name = "foo_proto",
@@ -171,6 +171,7 @@ Embedding may also be used to add extra sources sources to a
         embed = [":foo_go_proto"],
         importpath = "example.com/foo",
     )
+```
 
 ## Cross compilation
 
