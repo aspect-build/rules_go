@@ -249,7 +249,9 @@ _go_test_kwargs = {
             behaviour of `go test` so it is easy to write compatible tests.
 
             Setting it to `.` makes the test behave the normal way for a bazel test.
-            """
+
+            **Note:** This defaults to the package path.
+            """,
         ),
         "x_defs": attr.string_dict(
             doc = """Map of defines to add to the go link command.
@@ -307,6 +309,71 @@ _go_test_kwargs = {
             doc = """List of flags to add to the C link command.
             Subject to ["Make variable"] substitution and [Bourne shell tokenization].
             Only valid if `cgo` = `True`.
+            """,
+        ),
+        "pure": attr.string(
+            default = "auto",
+            doc = """Controls whether cgo source code and dependencies are compiled and linked,
+            similar to setting `CGO_ENABLED`. May be one of `on`, `off`,
+            or `auto`. If `auto`, pure mode is enabled when no C/C++
+            toolchain is configured or when cross-compiling. It's usually better to
+            control this on the command line with
+            `--@io_bazel_rules_go//go/config:pure`. See [mode attributes], specifically
+            [pure].
+            """,
+        ),
+        "static": attr.string(
+            default = "auto",
+            doc = """Controls whether a binary is statically linked. May be one of `on`,
+            `off`, or `auto`. Not available on all platforms or in all
+            modes. It's usually better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:static`. See [mode attributes],
+            [specifically static].
+            """,
+        ),
+        "race": attr.string(
+            default = "auto",
+            doc = """Controls whether code is instrumented for race detection. May be one of
+            `on`, `on`, or `auto`. Not available when cgo is
+            disabled. In most cases, it's better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:race`. See [mode attributes], specifically
+            [race].
+            """,
+        ),
+        "msan": attr.string(
+            default = "auto",
+            doc = """Controls whether code is instrumented for memory sanitization. May be one of
+            `on`, `on`, or `auto`. Not available when cgo is
+            disabled. In most cases, it's better to control this on the command line with
+            `--@io_bazel_rules_go//go/config:msan`. See [mode attributes], specifically
+            [msan].
+            """,
+        ),
+        "gotags": attr.string_list(
+            doc = """Enables a list of build tags when evaluating [build constraints]. Useful for
+            conditional compilation.
+            """,
+        ),
+        "goos": attr.string(
+            default = "auto",
+            doc = """Forces a binary to be cross-compiled for a specific operating system. It's
+            usually better to control this on the command line with `--platforms`.
+
+            This disables cgo by default, since a cross-compiling C/C++ toolchain is
+            rarely available. To force cgo, set `pure` = `off`.
+
+            See [Cross compilation] for more information.
+            """,
+        ),
+        "goarch": attr.string(
+            default = "auto",
+            doc = """Forces a binary to be cross-compiled for a specific architecture. It's usually
+            better to control this on the command line with `--platforms`.
+
+            This disables cgo by default, since a cross-compiling C/C++ toolchain is
+            rarely available. To force cgo, set `pure` = `off`.
+
+            See [Cross compilation] for more information.
             """,
         ),
         "_go_context_data": attr.label(default = "//:go_context_data"),
