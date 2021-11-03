@@ -262,6 +262,7 @@ _go_test_kwargs = {
             default = LINKMODE_NORMAL,
             doc = """Determines how the binary should be built and linked. This accepts some of
             the same values as `go build -buildmode` and works the same way.
+            <br><br>
             <ul>
             <li>`normal`: Builds a normal executable with position-dependent code.</li>
             <li>`pie`: Builds a position-independent executable.</li>
