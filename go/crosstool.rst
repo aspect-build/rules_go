@@ -7,8 +7,8 @@ Configuring a custom C toolchain
 .. _Configuring C++ toolchains: https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html
 .. _cc_library: https://docs.bazel.build/versions/master/be/c-cpp.html#cc_library
 .. _crosstool_config.proto: https://github.com/bazelbuild/bazel/blob/master/src/main/protobuf/crosstool_config.proto
-.. _go_binary: go/core.rst#go_binary
-.. _go_library: go/core.rst#go_library
+.. _go_binary: go/core.md#go_binary
+.. _go_library: go/core.md#go_library
 .. _toolchain: https://docs.bazel.build/versions/master/be/platform.html#toolchain
 .. _#1642: https://github.com/bazelbuild/rules_go/issues/1642
 

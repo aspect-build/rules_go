@@ -5,9 +5,9 @@ Build modes
 .. _Bazel configuration transitions: https://docs.bazel.build/versions/master/skylark/lib/transition.html
 .. _Bazel platform: https://docs.bazel.build/versions/master/platforms.html
 
-.. _go_library: core.rst#go_library
-.. _go_binary: core.rst#go_binary
-.. _go_test: core.rst#go_test
+.. _go_library: core.md#go_library
+.. _go_binary: core.md#go_binary
+.. _go_test: core.md#go_test
 .. _toolchain: toolchains.rst#the-toolchain-object
 
 .. _config_setting: https://docs.bazel.build/versions/master/be/general.html#config_setting

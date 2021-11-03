@@ -25,8 +25,8 @@ Go workspace rules
 .. _toolchains: toolchains.rst
 
 .. Go rules
-.. _go_library: core.rst#go_library
-.. _go_proto_library: https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go-proto-library
+.. _go_library: core.md#go_library
+.. _go_proto_library: https://github.com/bazelbuild/rules_go/blob/master/proto/core.md#go-proto-library
 .. _go_register_toolchains: toolchains.rst#go_register_toolchains
 .. _go_repository: https://github.com/bazelbuild/bazel-gazelle/blob/master/repository.rst#go_repository
 .. _go_toolchain: toolchains.rst#go_toolchain

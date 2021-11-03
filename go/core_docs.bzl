@@ -32,6 +32,9 @@
   [go_path]: #go_path
   [go_source]: #go_source
   [go_test]: #go_test
+  [Examples]: #examples
+  [go_library]: #go_library-1
+  [go_test]: #go_test-1    
   [Defines and stamping]: #defines-and-stamping
   [Embedding]: #embedding
   [Cross compilation]: #cross-compilation
@@ -48,6 +51,9 @@
   - [go_path](#go_path)
   - [go_source](#go_source)
   - [go_test](#go_test)
+- [Examples](#examples)
+  - [go_library](#go_library-1)
+  - [go_test](#go_test-1)
 - [Defines and stamping](#defines-and-stamping)
 - [Embedding](#embedding)
 - [Cross compilation](#cross-compilation)

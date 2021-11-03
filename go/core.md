@@ -34,6 +34,9 @@
   [go_path]: #go_path
   [go_source]: #go_source
   [go_test]: #go_test
+  [Examples]: #examples
+  [go_library]: #go_library-1
+  [go_test]: #go_test-1    
   [Defines and stamping]: #defines-and-stamping
   [Embedding]: #embedding
   [Cross compilation]: #cross-compilation
@@ -50,6 +53,9 @@
   - [go_path](#go_path)
   - [go_source](#go_source)
   - [go_test](#go_test)
+- [Examples](#examples)
+  - [go_library](#go_library-1)
+  - [go_test](#go_test-1)
 - [Defines and stamping](#defines-and-stamping)
 - [Embedding](#embedding)
 - [Cross compilation](#cross-compilation)
@@ -362,6 +368,76 @@ This builds a set of tests that can be run with `bazel test`.<br><br>
 | <a id="go_test-x_defs"></a>x_defs |  Map of defines to add to the go link command.             See [Defines and stamping] for examples of how to use these.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | optional | {} |
 
 
+## Examples
+
+### go_library
+``` bzl
+go_library(
+    name = "foo",
+    srcs = [
+        "foo.go",
+        "bar.go",
+    ],
+    deps = [
+        "//tools",
+        "@org_golang_x_utils//stuff",
+    ],
+    importpath = "github.com/example/project/foo",
+    visibility = ["//visibility:public"],
+)
+```
+
+### go_test
+
+To write an internal test, reference the library being tested with the :param:`embed`
+instead of :param:`deps`. This will compile the test sources into the same package as the library
+sources.
+
+#### Internal test example
+
+This builds a test that can use the internal interface of the package being tested.
+
+In the normal go toolchain this would be the kind of tests formed by adding writing
+`<file>_test.go` files in the same package.
+
+It references the library being tested with `embed`.
+
+
+``` bzl
+go_library(
+    name = "lib",
+    srcs = ["lib.go"],
+)
+
+go_test(
+    name = "lib_test",
+    srcs = ["lib_test.go"],
+    embed = [":lib"],
+)
+```
+
+#### External test example
+
+This builds a test that can only use the public interface(s) of the packages being tested.
+
+In the normal go toolchain this would be the kind of tests formed by adding an `<name>_test`
+package.
+
+It references the library(s) being tested with `deps`.
+
+``` bzl
+go_library(
+    name = "lib",
+    srcs = ["lib.go"],
+)
+
+go_test(
+    name = "lib_xtest",
+    srcs = ["lib_x_test.go"],
+    deps = [":lib"],
+)
+```
+
 ## Defines and stamping
 
 In order to provide build time information to go code without data files, we
@@ -414,6 +490,24 @@ go_binary(
     srcs = ["main.go"],
     deps = ["//version"],
     x_defs = {"example.com/repo/version.Version": "0.9"},
+)
+```
+
+### go_library
+
+``` bzl
+go_library(
+    name = "foo",
+    srcs = [
+        "foo.go",
+        "bar.go",
+    ],
+    deps = [
+        "//tools",
+        "@org_golang_x_utils//stuff",
+    ],
+    importpath = "github.com/example/project/foo",
+    visibility = ["//visibility:public"],
 )
 ```
 

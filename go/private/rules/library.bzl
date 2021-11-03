@@ -179,7 +179,7 @@ go_library = rule(
     """,
 )
 # TODO: add example to examples section
-# See go/core.rst#go_library for full documentation.
+# See go/core.md#go_library for full documentation.
 
 go_tool_library = rule(
     _go_library_impl,
@@ -202,4 +202,4 @@ go_tool_library = rule(
 # packages that are depended on implicitly by code generated within the Go rules.
 # This avoids a bootstrapping problem.
 
-# See go/core.rst#go_tool_library for full documentation.
+# See go/core.md#go_tool_library for full documentation.
