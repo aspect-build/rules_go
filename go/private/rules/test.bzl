@@ -420,7 +420,6 @@ _go_test_kwargs = {
     sources.
     """,
 }
-# TODO need to figure out way to generate doc for flag attributes (including extra ones like `goos`, `goarch`)
 
 go_test = rule(**_go_test_kwargs)
 go_transition_test = go_transition_rule(**_go_test_kwargs)

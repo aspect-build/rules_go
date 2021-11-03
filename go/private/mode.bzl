@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Modes are documented in go/modes.md#compilation-modes
+# Modes are documented in go/modes.rst#compilation-modes
 
 LINKMODE_NORMAL = "normal"
 

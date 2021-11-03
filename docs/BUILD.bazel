@@ -7,7 +7,6 @@ load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 # value := ({output MD file}, {rule template}, {footer file})
 _DOC_SRCS = {
     "//extras:embed_data": ("extras.md", "rule_subsection.vm", "footers/empty.md"),
-    "//go:mode_docs": ("modes.md", "rule_body.vm", "footers/empty.md"),
     "//go:core_docs": ("core.md", "rule_subsection.vm", "footers/core_docs.md"),
 }
 

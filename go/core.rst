@@ -13,16 +13,16 @@ Core Go rules
 .. _cgo: http://golang.org/cmd/cgo/
 .. _config_setting: https://docs.bazel.build/versions/master/be/general.html#config_setting
 .. _data dependencies: https://docs.bazel.build/versions/master/build-ref.html#data
-.. _goarch: modes.md#goarch
-.. _goos: modes.md#goos
-.. _mode attributes: modes.md#mode-attributes
+.. _goarch: modes.rst#goarch
+.. _goos: modes.rst#goos
+.. _mode attributes: modes.rst#mode-attributes
 .. _nogo: nogo.rst#nogo
-.. _pure: modes.md#pure
-.. _race: modes.md#race
-.. _msan: modes.md#msan
+.. _pure: modes.rst#pure
+.. _race: modes.rst#race
+.. _msan: modes.rst#msan
 .. _select: https://docs.bazel.build/versions/master/be/functions.html#select
 .. _shard_count: https://docs.bazel.build/versions/master/be/common-definitions.html#test.shard_count
-.. _static: modes.md#static
+.. _static: modes.rst#static
 .. _test_arg: https://docs.bazel.build/versions/master/user-manual.html#flag--test_arg
 .. _test_filter: https://docs.bazel.build/versions/master/user-manual.html#flag--test_filter
 .. _test_env: https://docs.bazel.build/versions/master/user-manual.html#flag--test_env
@@ -575,13 +575,13 @@ specifically static_.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`goarch`            | :type:`string`              | :value:`auto`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| Forces a binary to be cross-compiled for a specific architecture. It's usually                   |
-| better to control this on the command line with ``--platforms``.                                 |
-|                                                                                                  |
-| This disables cgo by default, since a cross-compiling C/C++ toolchain is                         |
-| rarely available. To force cgo, set :param:`pure` = :param:`off`.                                |
-|                                                                                                  |
-| See `Cross compilation`_ for more information.                                                   |
+ Forces a binary to be cross-compiled for a specific architecture. It's usually
+ better to control this on the command line with ``--platforms``.
+
+ This disables cgo by default, since a cross-compiling C/C++ toolchain is
+ rarely available. To force cgo, set :param:`pure` = :param:`off`.
+
+ See `Cross compilation`_ for more information.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`gc_goopts`         | :type:`string_list`         | :value:`[]`                           |
 +----------------------------+-----------------------------+---------------------------------------+
@@ -649,12 +649,12 @@ Only valid if :param:`cgo` = :value:`True`.
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`shard_count`       | :type:`integer`             | :value:`None`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| Non-negative integer less than or equal to 50, optional.                                         |
-|                                                                                                  |
-| Specifies the number of parallel shards to run the test. Test methods will be split across the   |
-| shards in a round-robin fashion.                                                                 |
-|                                                                                                  |
-| For more details on this attribute, consult the official Bazel documentation for shard_count_.   |
+ Non-negative integer less than or equal to 50, optional.
+
+ Specifies the number of parallel shards to run the test. Test methods will be split across the
+ shards in a round-robin fashion.
+
+ For more details on this attribute, consult the official Bazel documentation for shard_count_.
 +----------------------------+-----------------------------+---------------------------------------+
 
 To write an internal test, reference the library being tested with the :param:`embed`
