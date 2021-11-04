@@ -1,11 +1,6 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 
-  [gazelle rule]: https://github.com/bazelbuild/bazel-gazelle#bazel-rule
-  [golang/mock]: https://github.com/golang/mock
-  [gomock_rule]: https://github.com/jmhodges/bazel_gomock
-  [core go rules]: core.md
-
 # Extra rules
 
 This is a collection of helper rules. These are not core to building a go binary, but are supplied
@@ -40,7 +35,7 @@ This rule allows you to generate mock interfaces with mockgen (from [golang/mock
 
 <a id="#go_embed_data"></a>
 
-### go_embed_data
+## go_embed_data
 
 <pre>
 go_embed_data(<a href="#go_embed_data-name">name</a>, <a href="#go_embed_data-flatten">flatten</a>, <a href="#go_embed_data-package">package</a>, <a href="#go_embed_data-src">src</a>, <a href="#go_embed_data-srcs">srcs</a>, <a href="#go_embed_data-string">string</a>, <a href="#go_embed_data-unpack">unpack</a>, <a href="#go_embed_data-var">var</a>)
@@ -62,7 +57,7 @@ go_embed_data_dependencies()
 `go_embed_data` accepts the attributes listed below.
 
 
-#### **Attributes**
+**ATTRIBUTES**
 
 
 | Name  | Description | Type | Mandatory | Default |
@@ -77,3 +72,7 @@ go_embed_data_dependencies()
 | <a id="go_embed_data-var"></a>var |  Name of the variable that will contain the embedded data.   | String | optional | "Data" |
 
 
+  [gazelle rule]: https://github.com/bazelbuild/bazel-gazelle#bazel-rule
+  [golang/mock]: https://github.com/golang/mock
+  [gomock_rule]: https://github.com/jmhodges/bazel_gomock
+  [core go rules]: core.md

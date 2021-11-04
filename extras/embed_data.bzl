@@ -13,11 +13,6 @@
 # limitations under the License.
 
 """
-  [gazelle rule]: https://github.com/bazelbuild/bazel-gazelle#bazel-rule
-  [golang/mock]: https://github.com/golang/mock
-  [gomock_rule]: https://github.com/jmhodges/bazel_gomock
-  [core go rules]: core.md
-
 # Extra rules
 
 This is a collection of helper rules. These are not core to building a go binary, but are supplied

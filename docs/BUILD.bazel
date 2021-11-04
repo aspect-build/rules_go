@@ -6,7 +6,7 @@ load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 # key := {bzl_library target}
 # value := ({output MD file}, {rule template}, {footer file})
 _DOC_SRCS = {
-    "//extras:embed_data": ("extras.md", "rule_subsection.vm", "footers/empty.md"),
+    "//extras:embed_data": ("extras.md", "rule_body.vm", "footers/embed_data.md"),
     "//go:core_docs": ("core.md", "rule_subsection.vm", "footers/core_docs.md"),
 }
 
