@@ -12,7 +12,7 @@ which toggles HTML escaping.
 *#
 #macro( markdownCellFormatNoEscapeHtml $docString )#*
   *##if ($docString.contains("<ul>"))#*
-      *#${docString.trim().replaceAll("\n(\\s*\n)+", "<br><br>").replaceAll('\n', ' ')}#*
+      *#${docString.trim().replaceAll("\n(\\s*\n)+", "<br><br>").replaceAll("\n", " ")}#*
   *##else#*
       *#${util.markdownCellFormat($docString)}#*
   *##end#*

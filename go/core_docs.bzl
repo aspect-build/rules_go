@@ -1,7 +1,7 @@
 """
 # Core Go rules
 
-These are the core go rules, required for basic operation. The intent is that these rules are 
+These are the core go rules, required for basic operation. The intent is that these rules are
 sufficient to match the capabilities of the normal go tools.
 
 ## Contents
@@ -16,6 +16,7 @@ sufficient to match the capabilities of the normal go tools.
   - [go_library](#go_library-1)
   - [go_test](#go_test-1)
 - [Defines and stamping](#defines-and-stamping)
+  - [Stamping with the workspace status script](#stamping-with-the-workspace-status-script)
 - [Embedding](#embedding)
 - [Cross compilation](#cross-compilation)
   - [Platform-specific dependencies](#platform-specific-dependencies)

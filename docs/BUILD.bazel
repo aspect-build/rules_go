@@ -4,40 +4,56 @@ load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 
 # Dictionary of key-value pairs where:
 # key := {bzl_library target}
-# value := ({output MD file}, {rule template}, {footer file})
+# value := {"out": {output MD file}, "rule_template": {rule template file}, "footers": {[footer files]}}
 _DOC_SRCS = {
-    "//extras:embed_data": ("extras.md", "rule_body.vm", "footers/embed_data.md"),
-    "//go:core_docs": ("core.md", "rule_subsection.vm", "footers/core_docs.md"),
+    "//extras:embed_data": {
+        "out": "extras.md",
+        "rule_template": "rule_body.vm",
+        "footers": ["go_extras/links.txt"],
+    },
+    "//go:core_docs": {
+        "out": "core.md",
+        "rule_template": "rule_subsection.vm",
+        "footers": [
+            "go_core/examples.txt",
+            "go_core/defines_and_stamping.txt",
+            "go_core/embedding.txt",
+            "go_core/cross_compilation.txt",
+            "go_core/platform-specific_dependencies.txt",
+            "go_core/links.txt",
+        ],
+    },
 }
 
 # Generate MD from .bzl
 [
     stardoc(
-        name = out[0].replace(".md", "-docgen"),
-        out = out[0].replace(".md", "-docgen.md"),
-        input = input + ".bzl",
-        deps = [input],
-        rule_template = out[1]
+        name = value_dict["out"].replace(".md", "-docgen"),
+        out = value_dict["out"].replace(".md", "-docgen.md"),
+        input = bzl_library_target + ".bzl",
+        rule_template = value_dict["rule_template"],
+        deps = [bzl_library_target],
     )
     for [
-        input,
-        out,
+        bzl_library_target,
+        value_dict,
     ] in _DOC_SRCS.items()
 ]
 
 # Append footers onto generated MD
 [
     genrule(
-        name = out[0].replace(".md", "-linked"),
-        srcs = [out[0].replace(".md", "-docgen.md"), out[2]],
-        outs = [out[0]],
+        name = value_dict["out"].replace(".md", "-linked"),
+        srcs = [
+            value_dict["out"].replace(".md", "-docgen.md"),
+        ] + value_dict["footers"],
+        outs = [value_dict["out"]],
         cmd = """
-            IFS=' ' read -r -a srcs <<< "$(SRCS)" \n
             touch $@ \n
-            cat $${srcs[0]} $${srcs[1]} >> $@ \n
-            """
+            cat $(SRCS) >> $@ \n
+            """,
     )
-    for out in _DOC_SRCS.values()
+    for value_dict in _DOC_SRCS.values()
 ]
 
 # Update MD in local source tree
@@ -48,26 +64,26 @@ write_file(
         "#!/bin/sh",
         "cd $BUILD_WORKSPACE_DIRECTORY",
     ] + [
-        "cp -fv bazel-bin/docs/{0} go/{0}".format(out[0])
-        for out in _DOC_SRCS.values()
+        "cp -fv bazel-bin/docs/{0} go/{0}".format(value_dict["out"])
+        for value_dict in _DOC_SRCS.values()
     ],
 )
 
 sh_binary(
     name = "update",
     srcs = ["update.sh"],
-    data = [out[0] for out in _DOC_SRCS.values()],
+    data = [value_dict["out"] for value_dict in _DOC_SRCS.values()],
 )
 
 # Ensure that the generated MD has been updated in the local source tree
 [
     diff_test(
-        name = "check_" + out[0],
+        name = "check_" + value_dict["out"],
         failure_message = "Please run \"bazel run //docs:update\"",
         # Source file
-        file1 = "//go:" + out[0],
+        file1 = "//go:" + value_dict["out"],
         # Output from stardoc rule above
-        file2 = out[0],
+        file2 = value_dict["out"],
     )
-    for out in _DOC_SRCS.values()
+    for value_dict in _DOC_SRCS.values()
 ]
