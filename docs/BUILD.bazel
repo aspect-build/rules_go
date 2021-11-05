@@ -5,6 +5,8 @@ load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 # Dictionary of key-value pairs where:
 # key := {bzl_library target}
 # value := {"out": {output MD file}, "rule_template": {rule template file}, "footers": {[footer files]}}
+#
+# Note: the order of the footer files corresponds to the order in which they appear in the final doc
 _DOC_SRCS = {
     "//extras:embed_data": {
         "out": "extras.md",

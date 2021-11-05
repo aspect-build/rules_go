@@ -1,14 +1,11 @@
 #**
-This template is used for including rule definitions as subsections within larger sections in generated stardoc docstrings.
+This template is used for including rule definitions as top-level sections in generated stardoc docstrings.
 *#
 #*
 Workaround for markdownCellFormat() not allowing HTML (specifically lists) to be rendered in attribute table cells.
-For now, if a list is declared with '<ul>' in the docstring, "``` stuff ```" needs to be manually changed to "<pre><code>stuff</code></pre>"
-and "`stuff`" needs to be changed to "<code>stuff</code>"
 
-TODO: Create a PR against bazel, adding a boolean parameter to
-https://github.com/bazelbuild/bazel/blob/37bd0d027629bf0e3418208bb5ef9f6c4507f54/src/main/java/com/google/devtools/build/skydoc/rendering/MarkdownUtil.java#L51
-which toggles HTML escaping.
+TODO: Once https://github.com/bazelbuild/bazel/pull/14230 is merged, remove this macro and replace with call to
+      util.markdownCellFormatWithHtml($attribute.docString, true)
 *#
 #macro( markdownCellFormatNoEscapeHtml $docString )#*
   *##if ($docString.contains("<ul>"))#*
