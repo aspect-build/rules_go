@@ -11,6 +11,8 @@ load(
     "WELL_KNOWN_TYPE_RULES",
 )
 
+exports_files(["core_docs.md"])
+
 go_proto_compiler(
     name = "go_proto_bootstrap",
     visibility = ["//visibility:public"],
@@ -153,4 +155,14 @@ bzl_library(
     name = "gogo",
     srcs = ["gogo.bzl"],
     visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "core_docs",
+    srcs = ["core_docs.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/compiler.bzl",
+        "//proto/def.bzl",
+    ],
 )

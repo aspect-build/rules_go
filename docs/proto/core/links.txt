@@ -1,0 +1,13 @@
+  [proto_library]: https://docs.bazel.build/versions/master/be/protocol-buffer.html#proto_library
+  [default Go plugin]: https://github.com/golang/protobuf
+  [common plugins]: #predefined-plugins
+  [Go providers]: /go/providers.rst
+  [GoLibrary]: /go/providers.rst#golibrary
+  [GoSource]: /go/providers.rst#gosource
+  [GoArchive]: /go/providers.rst#goarchive
+  [Gazelle]: https://github.com/bazelbuild/bazel-gazelle
+  [Make variable substitution]: https://docs.bazel.build/versions/master/be/make-variables.html#make-var-substitution
+  [Bourne shell tokenization]: https://docs.bazel.build/versions/master/be/common-definitions.html#sh-tokenization
+  [gogoprotobuf]: https://github.com/gogo/protobuf
+  [compiler.bzl]: compiler.bzl
+  [bazelbuild/bazel#3867]: https://github.com/bazelbuild/bazel/issues/3867

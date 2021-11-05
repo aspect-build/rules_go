@@ -26,7 +26,7 @@ Go workspace rules
 
 .. Go rules
 .. _go_library: core.md#go_library
-.. _go_proto_library: https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go-proto-library
+.. _go_proto_library: https://github.com/bazelbuild/rules_go/blob/master/proto/core.md#go-proto-library
 .. _go_register_toolchains: toolchains.rst#go_register_toolchains
 .. _go_repository: https://github.com/bazelbuild/bazel-gazelle/blob/master/repository.rst#go_repository
 .. _go_toolchain: toolchains.rst#go_toolchain
@@ -46,7 +46,7 @@ Go workspace rules
 This document describes workspace rules, functions, and dependencies intended
 to be used in the ``WORKSPACE`` file.a
 
-See also the `toolchains`_ for information on `go_register_toolchains`_ and 
+See also the `toolchains`_ for information on `go_register_toolchains`_ and
 other rules used to download and register toolchains.
 
 Contents

@@ -25,6 +25,14 @@ _DOC_SRCS = {
             "go_core/links.txt",
         ],
     },
+    "//proto:core_docs": {
+        "out": "//proto:core.md",
+        "rule_template": "rule_subsection.vm",
+        "footers": [
+            "proto/core/examples.txt",
+            "proto/core/links.txt",
+        ],
+    },
 }
 
 # Generate MD from .bzl

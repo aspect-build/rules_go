@@ -3,7 +3,7 @@ Go rules for Bazel_
 
 .. Links to external sites and pages
 .. _//tests/core/cross: https://github.com/bazelbuild/rules_go/blob/master/tests/core/cross/BUILD.bazel
-.. _Avoiding conflicts: proto/core.rst#avoiding-conflicts
+.. _Avoiding conflicts: proto/core.md#avoiding-conflicts
 .. _Bazel labels: https://docs.bazel.build/versions/master/build-ref.html#labels
 .. _Bazel: https://bazel.build/
 .. _Build modes: go/modes.rst
@@ -14,8 +14,8 @@ Go rules for Bazel_
 .. _Gopher Slack: https://invite.slack.golangbridge.org/
 .. _Overriding dependencies: go/dependencies.rst#overriding-dependencies
 .. _Proto dependencies: go/dependencies.rst#proto-dependencies
-.. _Proto rules: proto/core.rst
-.. _Protocol buffers: proto/core.rst
+.. _Proto rules: proto/core.md
+.. _Protocol buffers: proto/core.md
 .. _Running Bazel Tests on Travis CI: https://kev.inburke.com/kevin/bazel-tests-on-travis-ci/
 .. _Toolchains: go/toolchains.rst
 .. _Using rules_go on Windows: windows.rst
@@ -42,8 +42,8 @@ Go rules for Bazel_
 .. _go_library: go/core.md#go_library
 .. _go_local_sdk: go/toolchains.rst#go_local_sdk
 .. _go_path: go/core.md#go_path
-.. _go_proto_compiler: proto/core.rst#go_proto_compiler
-.. _go_proto_library: proto/core.rst#go_proto_library
+.. _go_proto_compiler: proto/core.md#go_proto_compiler
+.. _go_proto_library: proto/core.md#go_proto_library
 .. _go_register_toolchains: go/toolchains.rst#go_register_toolchains
 .. _go_repository: https://github.com/bazelbuild/bazel-gazelle/blob/master/repository.rst#go_repository
 .. _go_rules_dependencies: go/dependencies.rst#go_rules_dependencies

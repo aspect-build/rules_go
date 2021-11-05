@@ -1,7 +1,7 @@
 Basic go_proto_library functionality
 ====================================
 
-.. _go_proto_library: /proto/core.rst#_go_proto_library
+.. _go_proto_library: /proto/core.md#_go_proto_library
 .. _go_library: /go/core.md#_go_library
 .. _protobuf v1.26.0: https://github.com/protocolbuffers/protobuf-go/releases/tag/v1.26.0
 .. _#1422: https://github.com/bazelbuild/rules_go/issues/1422
