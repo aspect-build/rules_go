@@ -19,8 +19,8 @@ go_library(
 
 ### go_test
 
-To write an internal test, reference the library being tested with the :param:`embed`
-instead of :param:`deps`. This will compile the test sources into the same package as the library
+To write an internal test, reference the library being tested with the `embed`
+instead of `deps`. This will compile the test sources into the same package as the library
 sources.
 
 #### Internal test example

@@ -1,3 +1,9 @@
+  [build constraints]: https://golang.org/pkg/go/build/#hdr-Build_Constraints
+  [select]: https://docs.bazel.build/versions/master/be/functions.html#select
+  [config_setting]: https://docs.bazel.build/versions/master/be/general.html#config_setting
+  [Gazelle]: https://github.com/bazelbuild/bazel-gazelle
+
+
 ## Platform-specific dependencies
 
 When cross-compiling, you may have some platform-specific sources and

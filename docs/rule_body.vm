@@ -25,7 +25,7 @@ ${util.ruleSummary($ruleName, $ruleInfo)}
 
 ${ruleInfo.docString}
 
-**ATTRIBUTES**
+#[[###]]# **Attributes**
 
 #if (!$ruleInfo.getAttributeList().isEmpty())
 

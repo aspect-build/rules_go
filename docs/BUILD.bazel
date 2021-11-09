@@ -1,91 +1,19 @@
-load("@bazel_skylib//rules:write_file.bzl", "write_file")
-load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
-load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
+load("//docs:doc_helpers.bzl", "stardoc_with_diff_test", "update_docs")
 
-# Dictionary of key-value pairs where:
-# key := {bzl_library target}
-# value := {"out": {output MD file}, "rule_template": {rule template file}, "footers": {[footer files]}}
-#
-# Note: the order of the footer files corresponds to the order in which they appear in the final doc
-_DOC_SRCS = {
-    "//extras:embed_data": {
-        "out": "extras.md",
-        "rule_template": "rule_body.vm",
-        "footers": ["go_extras/links.txt"],
-    },
-    "//go:core_docs": {
-        "out": "core.md",
-        "rule_template": "rule_subsection.vm",
-        "footers": [
-            "go_core/examples.txt",
-            "go_core/defines_and_stamping.txt",
-            "go_core/embedding.txt",
-            "go_core/cross_compilation.txt",
-            "go_core/platform-specific_dependencies.txt",
-            "go_core/links.txt",
-        ],
-    },
-}
+# For each doc file, generate MD from bzl_library, then perform diff test
+stardoc_with_diff_test(
+    bzl_library_target = "//docs/go/extras:extras",
+    out_label = "//docs/go/extras:extras.md",
+    rule_template = "rule_body.vm",
+)
 
-# Generate MD from .bzl
-[
-    stardoc(
-        name = value_dict["out"].replace(".md", "-docgen"),
-        out = value_dict["out"].replace(".md", "-docgen.md"),
-        input = bzl_library_target + ".bzl",
-        rule_template = value_dict["rule_template"],
-        deps = [bzl_library_target],
-    )
-    for [
-        bzl_library_target,
-        value_dict,
-    ] in _DOC_SRCS.items()
-]
-
-# Append footers onto generated MD
-[
-    genrule(
-        name = value_dict["out"].replace(".md", "-linked"),
-        srcs = [
-            value_dict["out"].replace(".md", "-docgen.md"),
-        ] + value_dict["footers"],
-        outs = [value_dict["out"]],
-        cmd = """
-            touch $@ \n
-            cat $(SRCS) >> $@ \n
-            """,
-    )
-    for value_dict in _DOC_SRCS.values()
-]
+stardoc_with_diff_test(
+    bzl_library_target = "//docs/go/core:core",
+    out_label = "//docs/go/core:rules.md",
+    rule_template = "rule_body.vm",
+)
 
 # Update MD in local source tree
-write_file(
-    name = "gen_update",
-    out = "update.sh",
-    content = [
-        "#!/bin/sh",
-        "cd $BUILD_WORKSPACE_DIRECTORY",
-    ] + [
-        "cp -fv bazel-bin/docs/{0} go/{0}".format(value_dict["out"])
-        for value_dict in _DOC_SRCS.values()
-    ],
-)
-
-sh_binary(
+update_docs(
     name = "update",
-    srcs = ["update.sh"],
-    data = [value_dict["out"] for value_dict in _DOC_SRCS.values()],
 )
-
-# Ensure that the generated MD has been updated in the local source tree
-[
-    diff_test(
-        name = "check_" + value_dict["out"],
-        failure_message = "Please run \"bazel run //docs:update\"",
-        # Source file
-        file1 = "//go:" + value_dict["out"],
-        # Output from stardoc rule above
-        file2 = value_dict["out"],
-    )
-    for value_dict in _DOC_SRCS.values()
-]

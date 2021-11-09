@@ -37,7 +37,7 @@ Go rules for Bazel_
 .. _go_binary: go/core.md#go_binary
 .. _go_context: go/toolchains.rst#go_context
 .. _go_download_sdk: go/toolchains.rst#go_download_sdk
-.. _go_embed_data: go/extras.md#go_embed_data
+.. _go_embed_data: docs/go/extras/extras.md#go_embed_data
 .. _go_host_sdk: go/toolchains.rst#go_host_sdk
 .. _go_library: go/core.md#go_library
 .. _go_local_sdk: go/toolchains.rst#go_local_sdk
@@ -140,7 +140,7 @@ Documentation
   * `go_toolchain`_
   * `go_context`_
 
-* `Extra rules <go/extras.md>`_
+* `Extra rules <docs/go/extras/extras.md>`_
 
   * `go_embed_data`_
 
