@@ -65,30 +65,30 @@ go_library = rule(
         "srcs": attr.label_list(
             allow_files = go_exts + asm_exts + cgo_exts,
             doc = """
-            The list of Go source files that are compiled to create the package. 
-            Only `.go` and `.s` files are permitted, unless the `cgo` attribute is set, 
-            in which case, `.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm` files are also permitted. 
+            The list of Go source files that are compiled to create the package.
+            Only `.go` and `.s` files are permitted, unless the `cgo` attribute is set,
+            in which case, `.c .cc .cpp .cxx .h .hh .hpp .hxx .inc .m .mm` files are also permitted.
             Files may be filtered at build time using Go [build constraints].
             """,
         ),
         "deps": attr.label_list(
             providers = [GoLibrary],
             doc = """
-            List of Go libraries this package imports directly. 
+            List of Go libraries this package imports directly.
             These may be `go_library` rules or compatible rules with the [GoLibrary] provider.
             """,
         ),
         "importpath": attr.string(
             doc = """
-            The source import path of this library. Other libraries can import this library using this path. 
+            The source import path of this library. Other libraries can import this library using this path.
             This must either be specified in `go_library` or inherited from one of the libraries in `embed`.
             """,
         ),
         "importmap": attr.string(
             doc = """
-            The actual import path of this library. By default, this is `importpath`. This is mostly only visible to the compiler and linker, 
-            but it may also be seen in stack traces. This must be unique among packages passed to the linker. 
-            It may be set to something different than `importpath` to prevent conflicts between multiple packages 
+            The actual import path of this library. By default, this is `importpath`. This is mostly only visible to the compiler and linker,
+            but it may also be seen in stack traces. This must be unique among packages passed to the linker.
+            It may be set to something different than `importpath` to prevent conflicts between multiple packages
             with the same path (for example, from different vendor directories).
             """,
         ),
@@ -97,25 +97,25 @@ go_library = rule(
         "embed": attr.label_list(
             providers = [GoLibrary],
             doc = """
-            List of Go libraries whose sources should be compiled together with this package's sources. 
-            Labels listed here must name `go_library`, `go_proto_library`, or other compatible targets with 
-            the [GoLibrary] and [GoSource] providers. Embedded libraries must have the same `importpath` as the embedding library. 
-            At most one embedded library may have `cgo = True`, and the embedding library may not also have `cgo = True`. 
+            List of Go libraries whose sources should be compiled together with this package's sources.
+            Labels listed here must name `go_library`, `go_proto_library`, or other compatible targets with
+            the [GoLibrary] and [GoSource] providers. Embedded libraries must have the same `importpath` as the embedding library.
+            At most one embedded library may have `cgo = True`, and the embedding library may not also have `cgo = True`.
             See [Embedding] for more information.
             """,
         ),
         "embedsrcs": attr.label_list(
             allow_files = True,
             doc = """
-            The list of files that may be embedded into the compiled package using `//go:embed` 
-            directives. All files must be in the same logical directory or a subdirectory as source files. 
-            All source files containing `//go:embed` directives must be in the same logical directory. 
+            The list of files that may be embedded into the compiled package using `//go:embed`
+            directives. All files must be in the same logical directory or a subdirectory as source files.
+            All source files containing `//go:embed` directives must be in the same logical directory.
             It's okay to mix static and generated source files and static and generated embeddable files.
             """,
         ),
         "gc_goopts": attr.string_list(
             doc = """
-            List of flags to add to the Go compilation command when using the gc compiler. 
+            List of flags to add to the Go compilation command when using the gc compiler.
             Subject to ["Make variable"] substitution and [Bourne shell tokenization].
             """,
         ),
@@ -126,40 +126,40 @@ go_library = rule(
         ),
         "cgo": attr.bool(
             doc = """
-            If `True`, the package may contain [cgo] code, and `srcs` may contain C, C++, Objective-C, and Objective-C++ files 
-            and non-Go assembly files. When cgo is enabled, these files will be compiled with the C/C++ toolchain and 
-            included in the package. Note that this attribute does not force cgo to be enabled. Cgo is enabled for 
+            If `True`, the package may contain [cgo] code, and `srcs` may contain C, C++, Objective-C, and Objective-C++ files
+            and non-Go assembly files. When cgo is enabled, these files will be compiled with the C/C++ toolchain and
+            included in the package. Note that this attribute does not force cgo to be enabled. Cgo is enabled for
             non-cross-compiling builds when a C/C++ toolchain is configured.
             """,
         ),
         "cdeps": attr.label_list(
             doc = """
-            List of other libraries that the c code depends on. 
+            List of other libraries that the c code depends on.
             This can be anything that would be allowed in [cc_library deps] Only valid if `cgo = True`.
             """,
         ),
         "cppopts": attr.string_list(
             doc = """
-            List of flags to add to the C/C++ preprocessor command. 
-            Subject to ["Make variable"] substitution and [Bourne shell tokenization]. 
+            List of flags to add to the C/C++ preprocessor command.
+            Subject to ["Make variable"] substitution and [Bourne shell tokenization].
             Only valid if `cgo = True`.
             """,
         ),
         "copts": attr.string_list(
             doc = """
-            List of flags to add to the C compilation command. 
+            List of flags to add to the C compilation command.
             Subject to ["Make variable"] substitution and [Bourne shell tokenization]. Only valid if `cgo = True`.
             """,
         ),
         "cxxopts": attr.string_list(
             doc = """
-            List of flags to add to the C++ compilation command. 
+            List of flags to add to the C++ compilation command.
             Subject to ["Make variable"] substitution and [Bourne shell tokenization]. Only valid if `cgo = True`.
             """,
         ),
         "clinkopts": attr.string_list(
             doc = """
-            List of flags to add to the C link command. 
+            List of flags to add to the C link command.
             Subject to ["Make variable"] substitution and [Bourne shell tokenization]. Only valid if `cgo = True`.
             """,
         ),
@@ -168,7 +168,7 @@ go_library = rule(
     toolchains = ["@io_bazel_rules_go//go:toolchain"],
     doc = """This builds a Go library from a set of source files that are all part of
     the same package.<br><br>
-    ***Note:*** For targets generated by Gazelle, `name` is typically the last component of the path, 
+    ***Note:*** For targets generated by Gazelle, `name` is typically the last component of the path,
     or `go_default_library`, with the old naming convention.<br><br>
     **Providers:**
     <ul>
@@ -178,8 +178,8 @@ go_library = rule(
     </ul>
     """,
 )
-# TODO: add example to examples section
-# See go/core.md#go_library for full documentation.
+
+# See docs/go/core/rules.md#go_library for full documentation.
 
 go_tool_library = rule(
     _go_library_impl,
@@ -202,4 +202,4 @@ go_tool_library = rule(
 # packages that are depended on implicitly by code generated within the Go rules.
 # This avoids a bootstrapping problem.
 
-# See go/core.md#go_tool_library for full documentation.
+# See docs/go/core/rules.md#go_tool_library for full documentation.

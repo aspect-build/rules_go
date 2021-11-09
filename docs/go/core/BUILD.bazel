@@ -2,12 +2,12 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
 exports_files([
     "rules.md",
-    "core.bzl",
+    "rules.bzl",
 ])
 
 bzl_library(
-    name = "core",
-    srcs = ["core.bzl"],
+    name = "rules",
+    srcs = ["rules.bzl"],
     visibility = ["//visibility:public"],
     deps = [
         "//go/private:rpath",

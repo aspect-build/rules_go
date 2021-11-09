@@ -2,25 +2,25 @@
   ["Make variable"]: https://docs.bazel.build/versions/master/be/make-variables.html
   [Bourne shell tokenization]: https://docs.bazel.build/versions/master/be/common-definitions.html#sh-tokenization
   [Gazelle]: https://github.com/bazelbuild/bazel-gazelle
-  [GoArchive]: providers.rst#GoArchive
-  [GoLibrary]: providers.rst#GoLibrary
-  [GoPath]: providers.rst#GoPath
-  [GoSource]: providers.rst#GoSource
+  [GoArchive]: /go/providers.rst#GoArchive
+  [GoLibrary]: /go/providers.rst#GoLibrary
+  [GoPath]: /go/providers.rst#GoPath
+  [GoSource]: /go/providers.rst#GoSource
   [build constraints]: https://golang.org/pkg/go/build/#hdr-Build_Constraints
   [cc_library deps]: https://docs.bazel.build/versions/master/be/c-cpp.html#cc_library.deps
   [cgo]: http://golang.org/cmd/cgo/
   [config_setting]: https://docs.bazel.build/versions/master/be/general.html#config_setting
   [data dependencies]: https://docs.bazel.build/versions/master/build-ref.html#data
-  [goarch]: modes.rst#goarch
-  [goos]: modes.rst#goos
-  [mode attributes]: modes.rst#mode-attributes
-  [nogo]: nogo.rst#nogo
-  [pure]: modes.rst#pure
-  [race]: modes.rst#race
-  [msan]: modes.rst#msan
+  [goarch]: /go/modes.rst#goarch
+  [goos]: /go/modes.rst#goos
+  [mode attributes]: /go/modes.rst#mode-attributes
+  [nogo]: /go/nogo.rst#nogo
+  [pure]: /go/modes.rst#pure
+  [race]: /go/modes.rst#race
+  [msan]: /go/modes.rst#msan
   [select]: https://docs.bazel.build/versions/master/be/functions.html#select
   [shard_count]: https://docs.bazel.build/versions/master/be/common-definitions.html#test.shard_count
-  [static]: modes.rst#static
+  [static]: /go/modes.rst#static
   [test_arg]: https://docs.bazel.build/versions/master/user-manual.html#flag--test_arg
   [test_filter]: https://docs.bazel.build/versions/master/user-manual.html#flag--test_filter
   [test_env]: https://docs.bazel.build/versions/master/user-manual.html#flag--test_env
@@ -32,14 +32,12 @@
   [go_path]: #go_path
   [go_source]: #go_source
   [go_test]: #go_test
-  [Examples]: #examples
-  [go_library]: #go_library-1
-  [go_test]: #go_test-1
-  [Defines and stamping]: #defines-and-stamping
-  [Stamping with the workspace status script]: #stamping-with-the-workspace-status-script
-  [Embedding]: #embedding
-  [Cross compilation]: #cross-compilation
-  [Platform-specific dependencies]: #platform-specific-dependencies
+  [Examples]: examples.md#examples
+  [Defines and stamping]: defines_and_stamping.md#defines-and-stamping
+  [Stamping with the workspace status script]: defines_and_stamping.md#stamping-with-the-workspace-status-script
+  [Embedding]: embedding.md#embedding
+  [Cross compilation]: cross_compilation.md#cross-compilation
+  [Platform-specific dependencies]: platform-specific_dependencies.md#platform-specific-dependencies
 
 # Core Go rules
 

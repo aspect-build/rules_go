@@ -89,4 +89,4 @@ go_source = rule(
     </ul>
     """,
 )
-# See go/core.md#go_source for full documentation.
+# See docs/go/core/rules.md#go_source for full documentation.

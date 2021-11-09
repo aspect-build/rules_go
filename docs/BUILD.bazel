@@ -8,7 +8,7 @@ stardoc_with_diff_test(
 )
 
 stardoc_with_diff_test(
-    bzl_library_target = "//docs/go/core:core",
+    bzl_library_target = "//docs/go/core:rules",
     out_label = "//docs/go/core:rules.md",
     rule_template = "rule_body.vm",
 )
